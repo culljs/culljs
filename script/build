@@ -9,7 +9,7 @@ var last = function (pieces) {
 
 var readFile = function (file) {
     var content = fs.readFileSync(file, "utf8");
-    return last(content.split("\"use locals\";")).split("\"export\";")[0];
+    return last(content.split("//\"use locals\";")).split("//\"export\";")[0];
 };
 
 var buildFile = function (files) {
