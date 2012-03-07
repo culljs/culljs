@@ -99,6 +99,15 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 var composed = F.compose([fi, seq.map]);
 
                 assert.equals(composed(fn, [4, 5, 6, 7]), [1, 2, 3]);
+            },
+
+            "as method calls all functions with correct this": function () {
+                var fns = [this.spy(), this.spy()];
+                var object = { method: F.compose(fns) };
+                object.method();
+
+                assert.calledOn(fns[0], object);
+                assert.calledOn(fns[1], object);
             }
         },
 
