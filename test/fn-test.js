@@ -6,8 +6,23 @@ if (typeof require === "function" && typeof module !== "undefined") {
 (function () {
     "use strict";
     var F = cull.fn;
+    var seq = cull.seq;
 
-    buster.testCase("fn module", {
+    buster.testCase("cull.fn", {
+        "unary": {
+            
+        },
+
+        "prop": {
+            "returns named property from object": function () {
+                assert.equals(F.prop("id")({ id: 42 }), 42);
+            },
+
+            "returns undefined when property does not exist": function () {
+                refute.defined(F.prop("id")(42));
+            }
+        },
+
         "compose": {
             "creates identity functions without input": function () {
                 var identity = F.compose();
@@ -80,20 +95,10 @@ if (typeof require === "function" && typeof module !== "undefined") {
 
             "composes two rather ordinary functions": function () {
                 var fn = function (a) { return a - 4; };
-                var fi = F.partial(F.select, F.identity);
-                var composed = F.compose([fi, F.map]);
+                var fi = F.partial(seq.select, F.identity);
+                var composed = F.compose([fi, seq.map]);
 
                 assert.equals(composed(fn, [4, 5, 6, 7]), [1, 2, 3]);
-            }
-        },
-
-        "prop": {
-            "returns named property from object": function () {
-                assert.equals(F.prop("id")({ id: 42 }), 42);
-            },
-
-            "returns undefined when property does not exist": function () {
-                refute.defined(F.prop("id")(42));
             }
         },
 
@@ -111,23 +116,8 @@ if (typeof require === "function" && typeof module !== "undefined") {
             },
 
             "binds select transform": function () {
-                var fi = F.partial(F.select, F.identity);
+                var fi = F.partial(seq.select, F.identity);
                 assert.equals(fi([0, 1, 2]), [1, 2]);
-            }
-        },
-
-        "map": {
-	    "squares numbers": function () {
-                var square = function (num) { return num * num; };
-                assert.equals(F.map(square, [1, 2, 3]), [1, 4, 9]);
-            }
-        },
-
-        "select": {
-	    "with identity removes falsy values": function () {
-                var items = [0, 1, 2, null, 3, 4, undefined, 5, 6];
-                var result = F.select(function (i) { return !!i; }, items);
-                assert.equals(result, [1, 2, 3, 4, 5, 6]);
             }
         },
 
@@ -142,40 +132,6 @@ if (typeof require === "function" && typeof module !== "undefined") {
 
             "returns undefined without arguments": function () {
                 assert.equals(F.identity(), undefined);
-            }
-        },
-
-        "mapdef": {
-            setUp: function () {
-                this.list = [
-                    { id: 1 },
-                    { id: 2 },
-                    { different: false },
-                    { id: 3 }
-                ];
-            },
-
-            "excludes undefineds from result": function () {
-                var fn = F.prop("id");
-                assert.equals(F.mapdef(fn, this.list), [1, 2, 3]);
-            },
-
-            "excludes nulls from result": function () {
-                this.list[2].id = null;
-                var fn = F.prop("id");
-                assert.equals(F.mapdef(fn, this.list), [1, 2, 3]);
-            },
-
-            "does not exclude zeroes from result": function () {
-                this.list[2].id = 0;
-                var fn = F.prop("id");
-                assert.equals(F.mapdef(fn, this.list), [1, 2, 0, 3]);
-            },
-
-            "does not call fn with undefined values": function () {
-                this.list[2] = null;
-                var fn = F.prop("id");
-                assert.equals(F.mapdef(fn, this.list), [1, 2, 3]);
             }
         }
     });

@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+var fs = require("fs");
+
+var files = ["fn", "seq", "dom"];
+
+var last = function (pieces) {
+    return pieces[pieces.length - 1];
+};
+
+var readFile = function (file) {
+    var content = fs.readFileSync(file, "utf8");
+    return last(content.split("\"use locals\";")).split("\"export\";")[0];
+};
+
+var buildFile = function (files) {
+    var cull = "var cull = {};";
+    cull += "(function () {\n    \"use strict\";\n";
+
+    cull += files.reduce(function (content, file) {
+        return content += readFile("lib/" + file + ".js");
+    }, "");
+
+    return cull + "}());";
+};
+
+try {
+    fs.mkdirSync("dist");
+} catch (e) {}
+
+var cull = buildFile(files);
+fs.writeFileSync("dist/cull.js", cull, "utf8");
+var size = (Math.floor((cull.length * 1000 / 1024)) / 1000);
+console.log("Produced dist/cull.js (~" + size + "kB)");
