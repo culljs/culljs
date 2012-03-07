@@ -1,4 +1,7 @@
 exports["Node tests"] = {
     environment: "node",
-    tests: ["test/**/*.js"]
+    sources: ["lib/**/*.js"],
+    tests: ["test/**/*.js"],
+    extensions: [require("buster-lint")],
+    "buster-lint": require("./autolint")
 };
