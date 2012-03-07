@@ -1,0 +1,28 @@
+{
+    "name": "culljs",
+    "version": "0.0.1",
+    "main": "./lib/cull",
+    "description": "A toolbelt for writing functional javascript.",
+    "author": { "name": "Christian Johansen and Magnar Sveen" },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/magnars/culljs.git"
+    },
+    "homepage": "https://github.com/magnars/culljs",
+    "scripts": {
+        "test": "buster test"
+    },
+    "engines": {
+        "node": "~0.6"
+    },
+    "dependencies": {
+        "underscore": "~1.3"
+    },
+    "devDependencies": {
+        "buster": "~0.4"
+    },
+    "keywords": [
+        "JavaScript",
+        "functional"
+    ]
+}
