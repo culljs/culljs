@@ -17,7 +17,7 @@ var buildFile = function (files) {
     var content = files.reduce(function (content, file) {
         return content += readFile("lib/" + file + ".js");
     }, "").split("\n").join("\n    ").trim();
-    return fs.readFileSync("lib/defs.js", "utf8").replace("${cull}", content);
+    return fs.readFileSync("script/cull-template.js", "utf8").replace("${cull}", content);
 };
 
 var minify = function (code) {
