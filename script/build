@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var fs = require("fs");
+var uglify = require("uglify-js");
 
 var files = ["fn", "seq", "dom"];
 
@@ -13,21 +14,67 @@ var readFile = function (file) {
 };
 
 var buildFile = function (files) {
-    var cull = "var cull = {};";
-    cull += "(function () {\n    \"use strict\";\n";
-
-    cull += files.reduce(function (content, file) {
+    var content = files.reduce(function (content, file) {
         return content += readFile("lib/" + file + ".js");
-    }, "");
-
-    return cull + "}());";
+    }, "").split("\n").join("\n    ").trim();
+    return fs.readFileSync("lib/defs.js", "utf8").replace("${cull}", content);
 };
+
+var minify = function (code) {
+    var u = uglify.uglify;
+    return u.gen_code(u.ast_squeeze(u.ast_mangle(uglify.parser.parse(code))));
+};
+
+var zeroPad = function (num) {
+    return num < 10 ? "0" + num : num;
+};
+
+var addLicense = function (code) {
+    var license = fs.readFileSync("LICENSE", "utf8");
+    var version = JSON.parse(fs.readFileSync("package.json", "utf8")).version;
+    var date = new Date();
+    return "/**\n * Cull.JS " + version + ", " + date.getFullYear() + "-" +
+        zeroPad(date.getMonth() + 1) + "-" + zeroPad(date.getDate()) + "\n * " +
+        license.split("\n").join("\n * ") + "\n */\n" + code;
+};
+
+var opt = function (short, long) {
+    for (var i = 2, l = process.argv.length; i < l; ++i) {
+        if (new RegExp(short + "|" + long).test(process.argv[i])) {
+            return true;
+        }
+    }
+    return false;
+};
+
+if (opt("-h", "--help")) {
+    console.log("Produce the cull.js distribution");
+    console.log("Usage:");
+    console.log("    script/build [opt]");
+    console.log("        -m --minify     Produce minified distribution");
+    console.log("        -n --no-license Skip the license header");
+    console.log("        -h --help       Show this message");
+    process.exit(1);
+}
 
 try {
     fs.mkdirSync("dist");
 } catch (e) {}
 
 var cull = buildFile(files);
-fs.writeFileSync("dist/cull.js", cull, "utf8");
+var willMinify = opt("-m", "--minify");
+var noLicense = opt("-n", "--no-license");
+
+if (willMinify) {
+    cull = minify(cull);
+}
+
+if (!noLicense) {
+    cull = addLicense(cull);
+}
+
+var target = willMinify ? "dist/cull.min.js" : "dist/cull.js";
+fs.writeFileSync(target, cull, "utf8");
 var size = (Math.floor((cull.length * 1000 / 1024)) / 1000);
-console.log("Produced dist/cull.js (~" + size + "kB)");
+var message = "Produced " + (willMinify ? "minified " : "");
+console.log(message + target + " (~" + size + "kB)");
