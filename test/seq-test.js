@@ -10,14 +10,14 @@ if (typeof require === "function" && typeof module !== "undefined") {
 
     buster.testCase("cull.seq", {
         "map": {
-	    "squares numbers": function () {
+            "squares numbers": function () {
                 var square = function (num) { return num * num; };
                 assert.equals(seq.map(square, [1, 2, 3]), [1, 4, 9]);
             }
         },
 
         "select": {
-	    "with identity removes falsy values": function () {
+            "with identity removes falsy values": function () {
                 var items = [0, 1, 2, null, 3, 4, undefined, 5, 6];
                 var result = seq.select(function (i) { return !!i; }, items);
                 assert.equals(result, [1, 2, 3, 4, 5, 6]);
