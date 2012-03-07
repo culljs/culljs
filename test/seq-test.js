@@ -24,6 +24,20 @@ if (typeof require === "function" && typeof module !== "undefined") {
             }
         },
 
+        "reduce": {
+            "sums numbers": function () {
+                var seq = [1, 2, 3, 4];
+                var add = function (a, b) { return a + b; };
+                assert.equals(seq.reduce(add, 0, seq), 10);
+            },
+
+            "sums numbers with seed value": function () {
+                var seq = [1, 2, 3, 4];
+                var add = function (a, b) { return a + b; };
+                assert.equals(seq.reduce(add, 5, seq), 15);
+            }
+        },
+
         "mapdef": {
             setUp: function () {
                 this.list = [
