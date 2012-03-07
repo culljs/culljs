@@ -10,7 +10,7 @@ if (typeof require === "function" && typeof module !== "undefined") {
 
     buster.testCase("cull.fn", {
         "unary": {
-            
+
         },
 
         "prop": {
@@ -60,7 +60,7 @@ if (typeof require === "function" && typeof module !== "undefined") {
 
                 assert.called(spies[0]);
                 assert.called(spies[1]);
-           },
+            },
 
             "calls composed functions in 'reverse' order": function () {
                 var spies = [this.spy(), this.spy()];
@@ -112,7 +112,7 @@ if (typeof require === "function" && typeof module !== "undefined") {
         },
 
         "partial": {
-	    "schönfinkelizes": function () {
+            "schönfinkelizes": function () {
                 var fn = function (a, b) { return a + b; };
                 var curried = F.partial(fn, 3);
                 assert.equals(curried(5), 8);
