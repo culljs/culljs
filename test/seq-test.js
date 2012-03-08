@@ -93,6 +93,29 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 var result = S.cut(4, [1, 2, 3, 4, 5, 6, 7]);
                 assert.equals(result, [[1, 2], [3, 4], [5, 6], [7]]);
             }
+        },
+
+        "partition": {
+            "splits a sequence into n-sized chunks": function () {
+                var n = 2;
+                var result = S.partition(n, [1, 2]);
+                assert.equals(result, [[1, 2]]);
+            },
+
+            "splits a longer sequence": function () {
+                var result = S.partition(2, [1, 2, 3, 4]);
+                assert.equals(result, [[1, 2], [3, 4]]);
+            },
+
+            "splits into larger chunks": function () {
+                var result = S.partition(3, [1, 2, 3, 4, 5, 6]);
+                assert.equals(result, [[1, 2, 3], [4, 5, 6]]);
+            },
+
+            "keeps incomplete partitions": function () {
+                var result = S.partition(2, [1, 2, 3, 4, 5]);
+                assert.equals(result, [[1, 2], [3, 4], [5]]);
+            }
         }
     });
 }());
