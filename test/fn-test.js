@@ -95,7 +95,7 @@ if (typeof require === "function" && typeof module !== "undefined") {
 
             "composes two rather ordinary functions": function () {
                 var fn = function (a) { return a - 4; };
-                var fi = F.partial(seq.select, F.identity);
+                var fi = F.partial(seq.select, cull.identity);
                 var composed = F.compose([fi, seq.map]);
 
                 assert.equals(composed(fn, [4, 5, 6, 7]), [1, 2, 3]);
@@ -125,22 +125,8 @@ if (typeof require === "function" && typeof module !== "undefined") {
             },
 
             "binds select transform": function () {
-                var fi = F.partial(seq.select, F.identity);
+                var fi = F.partial(seq.select, cull.identity);
                 assert.equals(fi([0, 1, 2]), [1, 2]);
-            }
-        },
-
-        "identity": {
-            "returns first argument": function () {
-                assert.equals(F.identity(4, 2), 4);
-            },
-
-            "returns null": function () {
-                assert.equals(F.identity(null), null);
-            },
-
-            "returns undefined without arguments": function () {
-                assert.equals(F.identity(), undefined);
             }
         }
     });
