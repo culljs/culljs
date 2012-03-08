@@ -11,7 +11,8 @@ module.exports = {
         "plusplus": true,
         "predef": [
             "assert",
-            "refute"
+            "refute",
+            "buster"
         ]
     }
 };
