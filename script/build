@@ -2,7 +2,7 @@
 var fs = require("fs");
 var uglify = require("uglify-js");
 
-var files = ["core", "fn", "seq", "dom", "dom/builder"];
+var files = ["core", "fn", "seq", "dom", "dom/el"];
 
 var last = function (pieces) {
     return pieces[pieces.length - 1];
