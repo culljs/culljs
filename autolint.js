@@ -1,7 +1,7 @@
 module.exports = {
     "paths": [
-        "test/*.js",
-        "lib/*.js"
+        "test/**/*.js",
+        "lib/**/*.js"
     ],
     "linterOptions": {
         "node": true,
@@ -12,7 +12,8 @@ module.exports = {
         "predef": [
             "assert",
             "refute",
-            "buster"
+            "buster",
+            "cull"
         ]
     }
 };
