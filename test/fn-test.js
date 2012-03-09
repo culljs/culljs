@@ -224,6 +224,22 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 var result = handler("Yo");
 
                 assert.calledWith(object.click, 42, "Yo");
+            },
+
+            "throws if handler object does not have method": function () {
+                var object = {};
+
+                assert.exception(function () {
+                    var handler = F.handler(object, "click");
+                });
+            },
+
+            "throws if handler object property is not a function": function () {
+                var object = { click: 42 };
+
+                assert.exception(function () {
+                    var handler = F.handler(object, "click");
+                });
             }
         }
     });
