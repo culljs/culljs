@@ -128,6 +128,103 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 var fi = F.partial(seq.select, cull.identity);
                 assert.equals(fi([0, 1, 2]), [1, 2]);
             }
+        },
+
+        "bind": {
+            "calls function with bound this object": function () {
+                var func = this.spy();
+                var obj = {};
+                var bound = F.bind(obj, func);
+
+                bound();
+                assert.equals(func.thisValues[0], obj);
+
+                bound.call({});
+                assert.equals(func.thisValues[1], obj);
+
+                bound.apply({});
+                assert.equals(func.thisValues[2], obj);
+            },
+
+            "calls method with bound this object": function () {
+                var obj = { meth: this.spy() };
+                var bound = F.bind(obj, "meth");
+
+                bound();
+                assert.equals(obj.meth.thisValues[0], obj);
+
+                bound.call({});
+                assert.equals(obj.meth.thisValues[1], obj);
+
+                bound.apply({});
+                assert.equals(obj.meth.thisValues[2], obj);
+            },
+
+            "calls function with bound arguments": function () {
+                var func = this.spy();
+                var obj = {};
+                var bound = F.bind(obj, func, 42, "Hey");
+
+                bound();
+
+                assert(func.calledWith(42, "Hey"));
+            },
+
+            "calls function with bound arguments and passed arguments": function () {
+                var func = this.spy();
+                var obj = {};
+                var bound = F.bind(obj, func, 42, "Hey");
+
+                bound("Bound", []);
+                assert(func.calledWith(42, "Hey", "Bound", []));
+
+                bound.call(null, ".call", []);
+                assert(func.calledWith(42, "Hey", ".call", []));
+
+                bound.apply(null, [".apply", []]);
+                assert(func.calledWith(42, "Hey", ".apply", []));
+            }
+        },
+
+        "handler": {
+            "returns function untouched": function () {
+                var fn = function () {};
+                var handler = F.handler(fn, "eventName");
+                assert.same(fn, handler);
+            },
+
+            "returns function that calls method on object": function () {
+                var object = { click: this.spy() };
+                var handler = F.handler(object, "click");
+                handler();
+
+                assert.calledOnce(object.click);
+                assert.calledOn(object.click, object);
+            },
+
+            "handler returns method's return value": function () {
+                var object = { click: this.stub().returns(42) };
+                var handler = F.handler(object, "click");
+                var result = handler();
+
+                assert.equals(result, 42);
+            },
+
+            "handler is called with arguments": function () {
+                var object = { click: this.stub().returns(42) };
+                var handler = F.handler(object, "click");
+                var result = handler(42, { id: 13 });
+
+                assert.calledWith(object.click, 42, { id: 13 });
+            },
+
+            "handler binds arguments": function () {
+                var object = { click: this.stub().returns(42) };
+                var handler = F.handler(object, "click", 42);
+                var result = handler("Yo");
+
+                assert.calledWith(object.click, 42, "Yo");
+            }
         }
     });
 }());
