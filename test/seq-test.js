@@ -72,29 +72,6 @@ if (typeof require === "function" && typeof module !== "undefined") {
             }
         },
 
-        "cut": {
-            "returns sequence of n sequences": function () {
-                var n = 1;
-                var result = S.cut(1, [0]);
-                assert.equals(result, [[0]]);
-            },
-
-            "distributes items evenly across sequences": function () {
-                var result = S.cut(2, [1, 2, 3, 4, 5, 6]);
-                assert.equals(result, [[1, 2, 3], [4, 5, 6]]);
-            },
-
-            "puts superfluous element in first sequence": function () {
-                var result = S.cut(3, [1, 2, 3, 4, 5, 6, 7]);
-                assert.equals(result, [[1, 2, 3], [4, 5], [6, 7]]);
-            },
-
-            "fills extra elements from left to right": function () {
-                var result = S.cut(4, [1, 2, 3, 4, 5, 6, 7]);
-                assert.equals(result, [[1, 2], [3, 4], [5, 6], [7]]);
-            }
-        },
-
         "partition": {
             "splits a sequence into n-sized chunks": function () {
                 var n = 2;
