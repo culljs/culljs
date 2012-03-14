@@ -9,10 +9,36 @@ if (typeof require === "function" && typeof module !== "undefined") {
     var F = cull.fn;
 
     buster.testCase("cull.seq", {
+        "concat": {
+            "concatenates lists": function () {
+                var a = [1, 2, 3];
+                var b = [4, 5, 6];
+                assert.equals(S.concat(a, b), [1, 2, 3, 4, 5, 6]);
+            },
+
+            "doesn't mutate original lists": function () {
+                var a = [1, 2, 3];
+                var b = [4, 5, 6];
+                S.concat(a, b);
+                assert.equals(a, [1, 2, 3]);
+                assert.equals(b, [4, 5, 6]);
+            }
+        },
+
         "map": {
             "squares numbers": function () {
                 var square = function (num) { return num * num; };
                 assert.equals(S.map(square, [1, 2, 3]), [1, 4, 9]);
+            }
+        },
+
+        "mapcat": {
+            "concatenates the results of map": function () {
+                var dbl = function (single) { return [single, single]; };
+                assert.equals(
+                    S.mapcat(dbl, [1, 2, 3]),
+                    [1, 1, 2, 2, 3, 3]
+                );
             }
         },
 
