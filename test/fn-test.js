@@ -23,6 +23,14 @@ if (typeof require === "function" && typeof module !== "undefined") {
             }
         },
 
+        "func": {
+            "calls named method on object": function () {
+                var f = F.func("getId");
+                var obj = { getId: function () { return 42; } };
+                assert.equals(42, f(obj));
+            }
+        },
+
         "compose": {
             "creates identity functions without input": function () {
                 var identity = F.compose();
