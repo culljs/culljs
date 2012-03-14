@@ -170,7 +170,7 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 assert(func.calledWith(42, "Hey"));
             },
 
-            "calls function with bound arguments and passed arguments": function () {
+            "calls function with bound args and passed args": function () {
                 var func = this.spy();
                 var obj = {};
                 var bound = F.bind(obj, func, 42, "Hey");
