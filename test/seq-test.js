@@ -22,6 +22,13 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 S.concat(a, b);
                 assert.equals(a, [1, 2, 3]);
                 assert.equals(b, [4, 5, 6]);
+            },
+
+            "concatenates arguments": function () {
+                var args = function () { return arguments; };
+                var a = args(1, 2, 3);
+                var b = args(4, 5, 6);
+                assert.equals(S.concat(a, b), [1, 2, 3, 4, 5, 6]);
             }
         },
 
