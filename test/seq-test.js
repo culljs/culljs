@@ -57,6 +57,14 @@ if (typeof require === "function" && typeof module !== "undefined") {
             }
         },
 
+        "reject": {
+            "keep only elements that does not match predicate": function () {
+                var items = [1, 2, 3, 4, 5];
+                var odd = function (n) { return n % 2; };
+                assert.equals(S.reject(odd, items), [2, 4]);
+            }
+        },
+
         "reduce": {
             "sums numbers": function () {
                 var seq = [1, 2, 3, 4];
