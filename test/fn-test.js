@@ -23,6 +23,22 @@ if (typeof require === "function" && typeof module !== "undefined") {
             }
         },
 
+        "func": {
+            "calls named method on object": function () {
+                var f = F.func("getId");
+                var obj = { getId: function () { return 42; } };
+                assert.equals(42, f(obj));
+            }
+        },
+
+        "eq": {
+            "creates a function to check for equality": function () {
+                var isFive = F.eq(5);
+                assert(isFive(5));
+                refute(isFive("5"));
+            }
+        },
+
         "compose": {
             "creates identity functions without input": function () {
                 var identity = F.compose();
@@ -170,7 +186,7 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 assert(func.calledWith(42, "Hey"));
             },
 
-            "calls function with bound arguments and passed arguments": function () {
+            "calls function with bound args and passed args": function () {
                 var func = this.spy();
                 var obj = {};
                 var bound = F.bind(obj, func, 42, "Hey");
