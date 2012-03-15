@@ -31,6 +31,14 @@ if (typeof require === "function" && typeof module !== "undefined") {
             }
         },
 
+        "eq": {
+            "creates a function to check for equality": function () {
+                var isFive = F.eq(5);
+                assert(isFive(5));
+                refute(isFive("5"));
+            }
+        },
+
         "compose": {
             "creates identity functions without input": function () {
                 var identity = F.compose();
