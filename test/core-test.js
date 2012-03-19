@@ -7,20 +7,6 @@ if (typeof require === "function" && typeof module !== "undefined") {
     "use strict";
 
     buster.testCase("cull.core", {
-        "refute": {
-            "does not throw when false": function () {
-                refute.exception(function () {
-                    cull.refute(false, "Happy happy, joy joy");
-                });
-            },
-
-            "throws TypeError when true": function () {
-                assert.exception(function () {
-                    cull.refute(true, "NOOO!");
-                }, "TypeError");
-            }
-        },
-
         "reduce": {
             "sums numbers": function () {
                 var seq = [1, 2, 3, 4];
