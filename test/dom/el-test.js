@@ -17,11 +17,33 @@ buster.testCase("Element builder", {
         assert.match(link.href, /\/yo$/);
     },
 
-    "creates element with children": function () {
+    "creates element with child": function () {
         var div = cull.fn.partial(cull.dom.el, "div");
         var el = div(div());
 
         assert.equals(el.childNodes.length, 1);
+    },
+
+    "creates element with children": function () {
+        var div = cull.fn.partial(cull.dom.el, "div");
+        var el = div([div(), div()]);
+
+        assert.equals(el.childNodes.length, 2);
+    },
+
+    "complains about multiple element arguments": function () {
+        var div = cull.fn.partial(cull.dom.el, "div");
+        assert.exception(function () {
+            div(div(), div(), div(), div());
+        }, "TypeError");
+    },
+
+    "complains about tagName attribute for element": function () {
+        var div = cull.fn.partial(cull.dom.el, "div");
+
+        assert.exception(function () {
+            div(div(), div());
+        }, "TypeError");
     },
 
     "creates element with children and attributes": function () {
