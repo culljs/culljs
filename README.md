@@ -2,10 +2,11 @@
 
 Cull is a toolbelt for writing functional javascript. It is based on some core values:
 
- * **Pure JavaScript** - no programming in strings.
- * **Pure functions** - no side effects, unless it is explicit
- * **Calling a function with wrong arguments fails now** - not later in another callback.
- * **Work directly with DOM-objects** - no wrapping.
+ * **Pure JavaScript** - no programming in strings
+ * **Pure functions** - prefer side-effect free functions wherever possible
+ * **No chaining** - chaining obscures side-effects and invites spaghetti code
+ * **No wrapping** - works with native arrays, DOM elements and other objects
+ * **Fail early** - complains loudly about API misuse in development
 
 This is totally a work in progress. Core values may be discarded at a whim. ;-)
 
