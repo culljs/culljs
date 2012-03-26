@@ -1,102 +1,123 @@
-buster.testCase("Element builder", {
-    "creates div element": function () {
-        var div = cull.fn.partial(cull.dom.el, "div");
-        assert.tagName(div(), "div");
-    },
+(function (d) {
+    buster.testCase("Element", {
+        "prop": {
+            "sets property on element": function () {
+                var el = document.createElement("div");
+                d.el.prop({ "className": "hey" }, el);
+                assert.className(el, "hey");
+            }
+        },
 
-    "creates element with attribute": function () {
-        var a = cull.fn.partial(cull.dom.el, "a");
-        assert.match(a({ href: "/yo" }).href, /\/yo$/);
-    },
+        "content": {
+            "removes existing content": function () {
+                var el = document.createElement("div");
+                el.innerHTML = "<h1>Hey</h1>";
+                d.el.content("", el);
+                refute.match(el.innerHTML, "Hey");
+            }
+        },
 
-    "creates element with multiple attributes": function () {
-        var a = cull.fn.partial(cull.dom.el, "a");
-        var link = a({ href: "/yo", className: "link-thingie" });
+        "builder": {
+            "creates div element": function () {
+                var div = cull.fn.partial(d.el, "div");
+                assert.tagName(div(), "div");
+            },
 
-        assert.className(link, "link-thingie");
-        assert.match(link.href, /\/yo$/);
-    },
+            "creates element with attribute property": function () {
+                var a = cull.fn.partial(d.el, "a");
+                assert.match(a({ href: "/yo" }).href, /\/yo$/);
+            },
 
-    "creates element with child": function () {
-        var div = cull.fn.partial(cull.dom.el, "div");
-        var el = div(div());
+            "creates element with multiple attribute properties": function () {
+                var a = cull.fn.partial(d.el, "a");
+                var link = a({ href: "/yo", className: "link-thingie" });
 
-        assert.equals(el.childNodes.length, 1);
-    },
+                assert.className(link, "link-thingie");
+                assert.match(link.href, /\/yo$/);
+            },
 
-    "creates element with children": function () {
-        var div = cull.fn.partial(cull.dom.el, "div");
-        var el = div([div(), div()]);
+            "creates element with child": function () {
+                var div = cull.fn.partial(d.el, "div");
+                var el = div(div());
 
-        assert.equals(el.childNodes.length, 2);
-    },
+                assert.equals(el.childNodes.length, 1);
+            },
 
-    "complains about multiple element arguments": function () {
-        var div = cull.fn.partial(cull.dom.el, "div");
-        assert.exception(function () {
-            div(div(), div(), div(), div());
-        }, "TypeError");
-    },
+            "creates element with children": function () {
+                var div = cull.fn.partial(d.el, "div");
+                var el = div([div(), div()]);
 
-    "complains about tagName attribute for element": function () {
-        var div = cull.fn.partial(cull.dom.el, "div");
+                assert.equals(el.childNodes.length, 2);
+            },
 
-        assert.exception(function () {
-            div(div(), div());
-        }, "TypeError");
-    },
+            "complains about multiple element arguments": function () {
+                var div = cull.fn.partial(d.el, "div");
+                assert.exception(function () {
+                    div(div(), div(), div(), div());
+                }, "TypeError");
+            },
 
-    "creates element with children and attributes": function () {
-        var div = cull.fn.partial(cull.dom.el, "div");
-        var el = div({ className: "hey", id: "ho" }, div());
+            "complains about tagName property for element": function () {
+                var div = cull.fn.partial(d.el, "div");
 
-        assert.equals(el.childNodes.length, 1);
-        assert.className(el, "hey");
-        assert.equals(el.id, "ho");
-    },
+                assert.exception(function () {
+                    div(div(), div());
+                }, "TypeError");
+            },
 
-    "creates element with text content": function () {
-        var h2 = cull.fn.partial(cull.dom.el, "h2");
-        var el = h2("Hey man");
+            "creates element with children and properties": function () {
+                var div = cull.fn.partial(d.el, "div");
+                var el = div({ className: "hey", id: "ho" }, div());
 
-        assert.equals(el.innerHTML, "Hey man");
-    },
+                assert.equals(el.childNodes.length, 1);
+                assert.className(el, "hey");
+                assert.equals(el.id, "ho");
+            },
 
-    "should not insert text as html": function () {
-        var div = cull.fn.partial(cull.dom.el, "div");
-        var el = div("<p>x</p><p>s</p><p>s</p>");
+            "creates element with text content": function () {
+                var h2 = cull.fn.partial(d.el, "h2");
+                var el = h2("Hey man");
 
-        assert.equals(el.childNodes.length, 1);
-    },
+                assert.equals(el.innerHTML, "Hey man");
+            },
 
-    "creates element with text and DOM element content": function () {
-        var div = cull.fn.partial(cull.dom.el, "div");
-        var el = div(["Hey man", div(), "Awright"]);
+            "should not insert text as html": function () {
+                var div = cull.fn.partial(d.el, "div");
+                var el = div("<p>x</p><p>s</p><p>s</p>");
 
-        assert.match(el.innerHTML, /hey man\s*<div><\/div>awright/i);
-    },
+                assert.equals(el.childNodes.length, 1);
+            },
 
-    "sets style properties": function () {
-        var div = cull.fn.partial(cull.dom.el, "div");
-        var el = div({ style: { position: "relative" } });
+            "creates element with text and DOM element content": function () {
+                var div = cull.fn.partial(d.el, "div");
+                var el = div(["Hey man", div(), "Awright"]);
 
-        assert.equals(el.style.position, "relative");
-    },
+                assert.match(el.innerHTML, /hey man\s*<div><\/div>awright/i);
+            },
 
-    "creates element with customly handled atrribute": function () {
-        var div = cull.fn.partial(cull.dom.el, "div");
-        cull.dom.el.attrHandlers["for"] = function (el, attr) {
-            el.htmlFor = attr;
-        };
+            "sets style properties": function () {
+                var div = cull.fn.partial(d.el, "div");
+                var el = div({ style: { position: "relative" } });
 
-        var el = div({ "for": "somebody" });
+                assert.equals(el.style.position, "relative");
+            },
 
-        assert.equals(el.htmlFor, "somebody");
-    },
+            "creates element with customly handled atrribute": function () {
+                var div = cull.fn.partial(d.el, "div");
+                d.el.propmap["for"] = function (el, attr) {
+                    el.htmlFor = attr;
+                };
 
-    "creates div element directly": function () {
-        var div = cull.dom.el("div", { className: "Yay" });
-        assert.tagName(div, "div");
-        assert.className(div, "Yay");
-    }
-});
+                var el = div({ "for": "somebody" });
+
+                assert.equals(el.htmlFor, "somebody");
+            },
+
+            "creates div element directly": function () {
+                var div = d.el("div", { className: "Yay" });
+                assert.tagName(div, "div");
+                assert.className(div, "Yay");
+            }
+        }
+    });
+}(cull.dom));
