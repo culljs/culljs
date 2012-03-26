@@ -1,16 +1,22 @@
 (function (d) {
     buster.testCase("Element", {
-        "prop": {
+        "setProp": {
             "sets property on element": function () {
                 var el = document.createElement("div");
-                d.el.prop({ "className": "hey" }, el);
+                d.el.setProp({ "className": "hey" }, el);
                 assert.className(el, "hey");
             },
 
             "does nothing if no properties": function () {
                 refute.exception(function () {
-                    d.el.prop(null, document.createElement("div"));
+                    d.el.setProp(null, document.createElement("div"));
                 });
+            },
+
+            "sets data attribute property": function () {
+                var el = document.createElement("div");
+                d.el.setProp({ "data-preselected": "42" }, el);
+                assert.equals(el["data-preselected"], "42");
             }
         },
 
