@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 var fs = require("fs");
 var uglify = require("uglify-js");
+var stripper = require("./guard-stripper");
 
 var files = ["core", "fn", "seq", "dom", "dom/el"];
 
@@ -63,13 +64,16 @@ try {
 
 var cull = buildFile(files);
 var willMinify = opt("-m", "--minify");
-var noLicense = opt("-n", "--no-license");
+
+if (opt("-s", "--no-guards")) {
+    cull = stripper.stripGuardDecls(stripper.stripGuards(cull));
+}
 
 if (willMinify) {
     cull = minify(cull);
 }
 
-if (!noLicense) {
+if (!opt("-n", "--no-license")) {
     cull = addLicense(cull);
 }
 
