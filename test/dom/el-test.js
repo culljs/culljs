@@ -5,6 +5,12 @@
                 var el = document.createElement("div");
                 d.el.prop({ "className": "hey" }, el);
                 assert.className(el, "hey");
+            },
+
+            "does nothing if no properties": function () {
+                refute.exception(function () {
+                    d.el.prop(null, document.createElement("div"));
+                });
             }
         },
 
