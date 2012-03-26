@@ -21,7 +21,8 @@
     "devDependencies": {
         "buster": "~0.4",
         "buster-lint": "~0",
-        "uglify-js": "~1.2"
+        "uglify-js": "~1.2",
+        "zeparser": "*"
     },
     "keywords": [
         "JavaScript",
