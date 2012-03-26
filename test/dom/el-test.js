@@ -9,11 +9,38 @@
         },
 
         "content": {
+            setUp: function () {
+                this.el = document.createElement("div");
+                this.el.innerHTML = "<h1>Hey</h1>";
+            },
+
             "removes existing content": function () {
-                var el = document.createElement("div");
-                el.innerHTML = "<h1>Hey</h1>";
-                d.el.content("", el);
-                refute.match(el.innerHTML, "Hey");
+                d.el.content("", this.el);
+                refute.match(this.el.innerHTML, "Hey");
+            },
+
+            "adds string content": function () {
+                d.el.content("Vanilla", this.el);
+                assert.equals(this.el.innerHTML, "Vanilla");
+            },
+
+            "adds DOM element content": function () {
+                var child = document.createElement("h2");
+                child.innerHTML = "Yes!";
+                d.el.content(child, this.el);
+                assert.equals(this.el.innerHTML, "<h2>Yes!</h2>");
+            },
+
+            "adds mixed content": function () {
+                var child = document.createElement("h2");
+                child.innerHTML = "Yes!";
+                d.el.content([child, "Tihi"], this.el);
+                assert.equals(this.el.innerHTML, "<h2>Yes!</h2>Tihi");
+            },
+
+            "escapes text content": function () {
+                d.el.content("<p>Tihi</p>", this.el);
+                assert.equals(this.el.innerHTML, "&lt;p&gt;Tihi&lt;/p&gt;");
             }
         },
 
