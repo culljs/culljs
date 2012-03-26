@@ -28,6 +28,15 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 var f = F.func("getId");
                 var obj = { getId: function () { return 42; } };
                 assert.equals(42, f(obj));
+            },
+
+            "calls with given arguments": function () {
+                var f = F.func("setName", ["Maria", "Perke"]);
+                var obj = { setName: this.spy() };
+
+                f(obj);
+
+                assert.calledOnceWith(obj.setName, "Maria", "Perke");
             }
         },
 
