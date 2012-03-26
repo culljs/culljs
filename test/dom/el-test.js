@@ -1,3 +1,5 @@
+/*global document*/
+
 (function (d) {
     buster.testCase("Element", {
         "setProp": {
