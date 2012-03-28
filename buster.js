@@ -9,8 +9,8 @@ exports["Node tests"] = {
 exports["Browser tests"] = {
     environment: "browser",
     libs: ["/node-shim.js"],
-    sources: ["lib/core.js", "lib/fn.js", "lib/dom/*.js"],
-    tests: ["test/dom/*.js"],
+    sources: ["lib/core.js", "lib/fn.js", "lib/dom.js", "lib/dom/*.js"],
+    tests: ["test/dom-test.js", "test/dom/*.js"],
     resources: [{
         path: "/node-shim.js",
         "content": "var module = {}; var require = function () {};"
