@@ -1,0 +1,20 @@
+#+SEQ_TODO: OPEN TODO INPR | DONE DONT
+* API change suggestions [0/2]
+** OPEN Rename `each` to `do`
+   `do` works better with the signature (fn, seq). `each` lends itself more to
+   having the sequence first:
+
+   each(students, expell);
+
+   vs
+
+   do(expell, students);
+** OPEN Remove `fn.handler`
+   Usage of the handler method includes such peculiarities as:
+
+*** F.handler(this.onSelection, "onSelection")(this.getSelected(), {})
+
+    Hmm?
+
+*** onSelection: backend
+    Object as callback? What?
