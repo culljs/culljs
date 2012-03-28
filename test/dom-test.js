@@ -3,7 +3,9 @@ if (typeof require === "function" && typeof module !== "undefined") {
     var cull = require("../lib/cull");
 }
 
-(function (cn) {
+(function (d) {
+    var cn = d.cn;
+
     buster.testCase("DOM", {
         "add class": {
             "sets initial class name": function () {
@@ -85,6 +87,13 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 assert.equals(divs[1].className, "some thing eh");
                 assert.equals(divs[2].className, "heh");
             }
+        },
+
+        "frag": {
+            "returns document fragment": function () {
+                var frag = d.frag();
+                assert.equals(frag.nodeType, 11);
+            }
         }
     });
-}(cull.dom.cn));
+}(cull.dom));
