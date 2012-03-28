@@ -18,3 +18,10 @@
 
 *** onSelection: backend
     Object as callback? What?
+
+* Helpful error messages [0/2]
+** TODO Error when inserting elements into leaf node element types (like <input> or <br>)
+   This causes an error only in IE. Use _assert to create helpful error messages
+   even if you're not using IE in your TDD environment.
+** TODO Error when inserting a block level element into a <p>
+   This causes IE to panic, but other browsers let it slide.
