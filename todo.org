@@ -1,0 +1,11 @@
+#+SEQ_TODO: OPEN TODO INPR | DONE DONT
+* API change suggestions [0/1]
+** OPEN Rename `each` to `do`
+   `do` works better with the signature (fn, seq). `each` lends itself more to
+   having the sequence first:
+
+   each(students, expell);
+
+   vs
+
+   do(expell, students);
