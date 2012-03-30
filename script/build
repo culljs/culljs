@@ -3,7 +3,7 @@ var fs = require("fs");
 var uglify = require("uglify-js");
 var stripper = require("./guard-stripper");
 
-var files = ["core", "fn", "seq", "dom", "dom/el"];
+var files = ["core", "fn", "obj", "seq", "dom", "dom/el"];
 
 var last = function (pieces) {
     return pieces[pieces.length - 1];
