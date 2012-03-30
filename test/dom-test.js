@@ -90,6 +90,10 @@ if (typeof require === "function" && typeof module !== "undefined") {
         },
 
         "frag": {
+            requiresSupportFor: {
+                "document": typeof document !== "undefined"
+            },
+
             "returns document fragment": function () {
                 var frag = d.frag();
                 assert.equals(frag.nodeType, 11);
