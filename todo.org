@@ -1,4 +1,6 @@
 #+SEQ_TODO: OPEN TODO INPR | DONE DONT
+* Bugs [0/1]
+** TODO isSeq identifies dom elements with children as seqs - which crashes toSeq
 * API change suggestions [0/2]
 ** OPEN Rename `each` to `do`
    `do` works better with the signature (fn, seq). `each` lends itself more to
