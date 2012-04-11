@@ -1,3 +1,5 @@
+/*global document*/
+
 if (typeof require === "function" && typeof module !== "undefined") {
     var buster = require("buster");
     var cull = require("../lib/cull");
