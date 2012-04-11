@@ -120,6 +120,12 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 var result = S.partition(2, [1, 2, 3, 4, 5]);
                 assert.equals(result, [[1, 2], [3, 4], [5]]);
             }
+        },
+
+        "indexOf": {
+            "finds the index of an item": function () {
+                assert.equals(1, S.indexOf("b", ["a", "b", "c"]));
+            }
         }
     });
 }());
