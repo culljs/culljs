@@ -13,6 +13,16 @@ if (typeof require === "function" && typeof module !== "undefined") {
                     name: "Mr"
                 }), ["id", "num", "name"]);
             }
+        },
+
+        "values": {
+            "returns enumerable values of object": function () {
+                assert.equals(o.values({
+                    id: 1,
+                    num: 42,
+                    name: "Mr"
+                }), [1, 42, "Mr"]);
+            }
         }
     });
 
