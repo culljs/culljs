@@ -1,39 +1,6 @@
-#+SEQ_TODO: OPEN TODO INPR | DONE DONT
+#+SEQ_TODO: TODO INPR | DONE DONT
 * Bugs [0/1]
 ** TODO isSeq identifies dom elements with children as seqs - which crashes toSeq
-* API change suggestions [0/2]
-** OPEN Rename `each` to `do`
-   `do` works better with the signature (fn, seq). `each` lends itself more to
-   having the sequence first:
-
-   each(students, expell);
-
-   vs
-
-   do(expell, students);
-** OPEN Remove `fn.handler`
-   Usage of the handler method includes such peculiarities as:
-
-*** F.handler(this.onSelection, "onSelection")(this.getSelected(), {})
-
-    Hmm?
-
-*** onSelection: backend
-    Object as callback? What?
-
-    -> just like event listener objects in the DOM api:
-
-    element.addEventListener("click", {
-        handleEvent: function () {}
-    });
-
-    http://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-EventListener
-
-    Only difference is that the event handler method is configurable (i.e. can
-    correspond to the type of event). Avoids excessive use of bind()
-
-***
-
 * Helpful error messages [0/2]
 ** TODO Error when inserting elements into leaf node element types (like <input> or <br>)
    This causes an error only in IE. Use _assert to create helpful error messages
