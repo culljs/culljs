@@ -3,24 +3,6 @@ var fs = require("fs");
 var uglify = require("uglify-js");
 var stripper = require("./guard-stripper");
 
-var files = ["core", "fn", "obj", "seq", "dom", "dom/el"];
-
-var last = function (pieces) {
-    return pieces[pieces.length - 1];
-};
-
-var readFile = function (file) {
-    var content = fs.readFileSync(file, "utf8");
-    return last(content.split("//\"use locals\";")).split("module.exports")[0];
-};
-
-var buildFile = function (files) {
-    var content = files.reduce(function (content, file) {
-        return content += readFile("lib/" + file + ".js");
-    }, "").split("\n").join("\n    ").trim();
-    return fs.readFileSync("script/cull-template.js", "utf8").replace("${cull}", content);
-};
-
 var minify = function (code) {
     var u = uglify.uglify;
     return u.gen_code(u.ast_squeeze(u.ast_mangle(uglify.parser.parse(code))));
@@ -62,7 +44,7 @@ try {
     fs.mkdirSync("dist");
 } catch (e) {}
 
-var cull = buildFile(files);
+var cull = fs.readFileSync("lib/cull.js", "utf8");
 var willMinify = opt("-m", "--minify");
 
 if (opt("-s", "--no-guards")) {

@@ -13,7 +13,11 @@ module.exports = {
             "assert",
             "refute",
             "buster",
-            "cull"
+            "cull",
+            "document"
         ]
-    }
+    },
+    "excludes": [
+        "underscore"
+    ]
 };
