@@ -3,11 +3,11 @@ if (typeof require === "function" && typeof module !== "undefined") {
     var cull = require("../lib/cull");
 }
 
-(function (o) {
+(function (C) {
     buster.testCase("object", {
         "keys": {
             "returns enumerable keys of object": function () {
-                assert.equals(o.keys({
+                assert.equals(C.keys({
                     id: 1,
                     num: 42,
                     name: "Mr"
@@ -17,7 +17,7 @@ if (typeof require === "function" && typeof module !== "undefined") {
 
         "values": {
             "returns enumerable values of object": function () {
-                assert.equals(o.values({
+                assert.equals(C.values({
                     id: 1,
                     num: 42,
                     name: "Mr"
@@ -26,4 +26,4 @@ if (typeof require === "function" && typeof module !== "undefined") {
         }
     });
 
-}(cull.obj));
+}(cull));
