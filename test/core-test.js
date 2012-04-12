@@ -61,6 +61,26 @@ if (typeof require === "function" && typeof module !== "undefined") {
             "returns undefined without arguments": function () {
                 assert.equals(cull.identity(), undefined);
             }
+        },
+
+        "all": {
+            "is true for all truthy values": function () {
+                assert(cull.all(cull.identity, [1, 2, 3, 4]));
+            },
+
+            "is false when some are falsy": function () {
+                refute(cull.all(cull.identity, [1, 2, 3, 0]));
+            }
+        },
+
+        "some": {
+            "is true for some truthy values": function () {
+                assert(cull.some(cull.identity, [1, 0, 3, 0]));
+            },
+
+            "is false for all falsy values": function () {
+                refute(cull.some(cull.identity, [0, 0, 0, 0]));
+            }
         }
     });
 }());
