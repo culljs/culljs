@@ -34,6 +34,14 @@ if (typeof require === "function" && typeof module !== "undefined") {
             "squares numbers": function () {
                 var square = function (num) { return num * num; };
                 assert.equals(C.map(square, [1, 2, 3]), [1, 4, 9]);
+            },
+
+            "passes only item": function () {
+                refute.exception(function () {
+                    C.map(function () {
+                        if (arguments.length !== 1) { throw new Error("fail"); }
+                    }, [1, 2, 3]);
+                });
             }
         },
 

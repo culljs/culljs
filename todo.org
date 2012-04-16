@@ -1,6 +1,7 @@
 #+SEQ_TODO: TODO INPR | DONE DONT
-* Bugs [0/1]
+* Bugs [0/2]
 ** TODO isSeq identifies dom elements with children as seqs - which crashes toSeq
+** TODO cannot set data- attributes with cull.dom.el
 * Helpful error messages [0/2]
 ** TODO Error when inserting elements into leaf node element types (like <input> or <br>)
    This causes an error only in IE. Use _assert to create helpful error messages
