@@ -14,25 +14,6 @@ This is totally a work in progress. Core values may be discarded at a whim. ;-)
 
 In an effort to create a consistent API, here are some basic function parameter guidelines:
 
-### Accept both one object or a list of objects.
-
-For instance, `fn.prop` creates a function that takes an object and returns the given property:
-
-    var hero = { firstName: "Moses", lastName: "Schönfinkel" };
-
-    var getName = cull.fn.prop("lastName");
-    assert.equals(getName(hero), "Schönfinkel");
-
-But it also takes an array of property names.
-
-    var getNames = cull.fn.prop(["firstName", "lastName"]);
-    assert.equals(getNames(hero), ["Moses", "Schönfinkel"]);
-
-Some functions look better using `arguments` to accept lists - others can't
-afford that luxury because it needs optional parameters. For consitency and to
-eliminate any guesswork, all functions take a list argument, and none use
-`arguments`.
-
 ### Function first, collection second
 
 The readability of
