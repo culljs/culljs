@@ -55,6 +55,14 @@ if (typeof require === "function" && typeof module !== "undefined") {
             }
         },
 
+        "first": {
+            "finds the first matching element in a list": function () {
+                var items = [1, 2, 3, 4];
+                var even = function (i) { return i % 2 === 0; };
+                assert.equals(C.first(even, items), 2);
+            }
+        },
+
         "select": {
             "with identity removes falsy values": function () {
                 var items = [0, 1, 2, null, 3, 4, undefined, 5, 6];
