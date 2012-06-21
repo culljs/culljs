@@ -146,6 +146,11 @@ if (typeof require === "function" && typeof module !== "undefined") {
             "returns array with the elements in coll separated by sep": function () {
                 var result = C.interpose(":", [1, 2, 3]);
                 assert.equals(result, [1, ":", 2, ":", 3]);
+            },
+
+            "does nothing interesting for empty or single element arrays": function () {
+                assert.equals(C.interpose(":", []), []);
+                assert.equals(C.interpose(":", [1]), [1]);
             }
         }
     });
