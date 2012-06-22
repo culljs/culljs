@@ -142,6 +142,13 @@ if (typeof require === "function" && typeof module !== "undefined") {
             }
         },
 
+        "difference": {
+            "subtracts one array from the other": function () {
+                var result = C.difference([1, 2, 3, 4], [2, 3]);
+                assert.equals(result, [1, 4]);
+            }
+        },
+
         "interpose": {
             "returns array with the elements in coll separated by sep": function () {
                 var result = C.interpose(":", [1, 2, 3]);
