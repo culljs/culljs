@@ -88,6 +88,13 @@
                 assert.equals(el.childNodes.length, 2);
             },
 
+            "doesn't get confused about select elements": function () {
+                var el = div(d.el.select([d.el.option(), d.el.option()]));
+
+                assert.equals(el.childNodes.length, 1);
+                assert.equals(el.firstChild.childNodes.length, 2);
+            },
+
             "complains about multiple element arguments": function () {
                 assert.exception(function () {
                     div(div(), div(), div(), div());
