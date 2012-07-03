@@ -143,7 +143,7 @@
                 assert.equals(el.style.position, "relative");
             },
 
-            "creates element with customly handled atrribute": function () {
+            "creates element with customly handled attribute": function () {
                 var div = cull.partial(d.el, "div");
                 d.el.propmap["for"] = function (el, attr) {
                     el.htmlFor = attr;
