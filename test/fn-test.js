@@ -143,6 +143,14 @@ if (typeof require === "function" && typeof module !== "undefined") {
             }
         },
 
+        "callWith": {
+            "returns a fn that takes a fn and calls it with args": function () {
+                var add = function (a, b) { return a + b; };
+                var fn = C.callWith(1, 2);
+                assert.equals(fn(add), 3);
+            }
+        },
+
         "partial": {
             "schönfinkelizes": function () {
                 var fn = function (a, b) { return a + b; };
