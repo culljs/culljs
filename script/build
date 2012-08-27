@@ -36,6 +36,7 @@ if (opt("-h", "--help")) {
     console.log("    script/build [opt]");
     console.log("        -m --minify     Produce minified distribution");
     console.log("        -n --no-license Skip the license header");
+    console.log("        -s --no-guards  Remove the helpful error messages");
     console.log("        -h --help       Show this message");
     process.exit(1);
 }
