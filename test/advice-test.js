@@ -12,25 +12,37 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 list: [],
                 fn: function (x, y) {
                     this.list.push(x);
-                    return y;
+                    return y - 1;
                 }
             };
         },
 
         "after": {
-            setUp: function () {
-                cull.after(this.obj, "fn", function (x) {
-                    this.list.push(x + 1);
-                });
-            },
-
             "runs after the original function": function () {
-                this.obj.fn(3);
-                assert.equals(this.obj.list, [3, 4]);
+                cull.after(this.obj, "fn", function (ret, x) {
+                    this.list.push(ret * x);
+                });
+
+                this.obj.fn(3, 2);
+
+                assert.equals(this.obj.list, [3, 3]);
             },
 
             "returns value from original function": function () {
-                assert.equals(this.obj.fn(3, "ret"), "ret");
+                cull.after(this.obj, "fn", function (ret, x) {
+                    this.list.push(ret * x);
+                });
+
+                assert.equals(this.obj.fn(3, 7), 6);
+            },
+
+            "returns new value if given": function () {
+                cull.after(this.obj, "fn", function (ret, x) {
+                    this.list.push(ret * x);
+                    return false;
+                });
+
+                assert.equals(this.obj.fn(3, 7), false);
             }
         },
 
@@ -47,7 +59,7 @@ if (typeof require === "function" && typeof module !== "undefined") {
             },
 
             "returns value from original function": function () {
-                assert.equals(this.obj.fn(3, "ret"), "ret");
+                assert.equals(this.obj.fn(3, 7), 6);
             }
         },
 
@@ -70,7 +82,7 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 cull.around(this.obj, "fn", function (orig, x, y) {
                     return x + orig.call(this, x, y);
                 });
-                assert.equals(this.obj.fn(3, "ret"), "3ret");
+                assert.equals(this.obj.fn(3, 7), 9);
             }
         }
     });
