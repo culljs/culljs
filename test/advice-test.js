@@ -43,6 +43,17 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 });
 
                 assert.equals(this.obj.fn(3, 7), false);
+            },
+
+            "runs in same this-context": function () {
+                var list = ["other"];
+                cull.after(this.obj, "fn", function () {
+                    this.list.push("after");
+                });
+
+                this.obj.fn.call({ list: list }, "x", "y");
+
+                assert.equals(list, ["other", "x", "after"]);
             }
         },
 
@@ -60,6 +71,12 @@ if (typeof require === "function" && typeof module !== "undefined") {
 
             "returns value from original function": function () {
                 assert.equals(this.obj.fn(3, 7), 6);
+            },
+
+            "runs in same this-context": function () {
+                var list = [42];
+                this.obj.fn.call({ list: list }, 3);
+                assert.equals(list, [42, 2, 3]);
             }
         },
 
