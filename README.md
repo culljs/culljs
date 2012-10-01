@@ -25,7 +25,7 @@ over
     map(filter(persons, underage), name)
 
 tells us which order to put the parameters. It is hard to spot what `name`
-belongs to, dangling at the end. This gets harder with more chained functions.
+belongs to, dangling at the end. This gets harder with more nested functions.
 
 You might argue that when you inline the functions, the second form looks
 better. For maximum visual pleasure, don't inline your functions.
