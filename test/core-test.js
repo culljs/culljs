@@ -81,6 +81,20 @@ if (typeof require === "function" && typeof module !== "undefined") {
             "is false for all falsy values": function () {
                 refute(cull.some(cull.identity, [0, 0, 0, 0]));
             }
+        },
+
+        "onlySome": {
+            "is true when there is a mix": function () {
+                assert(cull.onlySome(cull.identity, [1, 0, 1]));
+            },
+
+            "is false when none match": function () {
+                refute(cull.onlySome(cull.identity, [0, 0, 0]));
+            },
+
+            "is false when all match": function () {
+                refute(cull.onlySome(cull.identity, [1, 1, 1]));
+            }
         }
     });
 }());
