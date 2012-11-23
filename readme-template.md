@@ -38,6 +38,10 @@ functions.
 
 [[ function-index ]]
 
+## Documentation
+
+[[ function-docs ]]
+
 ## License
 
 Copyright © 2012, Christian Johansen and Magnar Sveen. Cull.js uses

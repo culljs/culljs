@@ -15,6 +15,38 @@ function firstWithValueAfter(value, node, tokens) {
     return tokens[i];
 }
 
+var doc_comment_start = /^\/\*\*/;
+
+function docCommentNodeFor(node) {
+    var i = node.tokposw;
+    while (tokens[--i] && !tokens[i].value.match(doc_comment_start)) {
+        if (tokens[i].tokposb) {
+            return null; // found non-whitespace/non-comment before doc comment
+        }
+    }
+    return tokens[i];
+}
+
+var spaces_star_spaces = / *\* */;
+
+function removeLeadingStars(line) {
+    return line.replace(spaces_star_spaces, "");
+}
+
+var comment_end = /\*\//;
+
+function stripCommentMarkers(comment) {
+    comment = comment.replace(doc_comment_start, "");
+    comment = comment.replace(comment_end, "");
+    comment = comment.split("\n").map(removeLeadingStars).join(" ").trim();
+    return comment;
+}
+
+function docCommentFor(node) {
+    var comment = docCommentNodeFor(node);
+    return comment ? stripCommentMarkers(comment.value) : "";
+}
+
 function fnListComment(tokens) {
     var nodes = nodesWithValue("/** docs:function-list */", tokens);
     if (!nodes.length === 1) {
@@ -49,12 +81,27 @@ function publicFnList(tokens) {
     });
 }
 
-function functionIndex1(o) {
-    return " - " + fnName(o) + " " + fnSignature(o);
+function githubLinkID(s) {
+    return s.replace(/[^a-zA-Z0-9-]+/g, "-").replace(/-$/, "");
 }
 
-function functionIndex(tokens) {
-    return publicFnList(tokens).map(functionIndex1).join("\n");
+function functionIndex1(fn) {
+    var name = fnName(fn);
+    var signature = fnSignature(fn);
+    var link = githubLinkID(name + " " + signature);
+    return "* [" + name + "](#" + link  + ") `" + signature + "`";
+}
+
+function functionIndex(fns) {
+    return fns.map(functionIndex1).join("\n");
+}
+
+function functionDocs1(fn) {
+    return "### " + fnName(fn) + " `" + fnSignature(fn) + "`\n\n" + docCommentFor(fn);
+}
+
+function functionDocs(fns) {
+    return fns.map(functionDocs1).join("\n\n");
 }
 
 function loadCullTokens(path) {
@@ -66,7 +113,10 @@ function loadCullTokens(path) {
 
 var tokens = loadCullTokens("../lib/cull.js");
 var template = fs.readFileSync("../readme-template.md", "utf-8");
+var fns = publicFnList(tokens);
 
-var result = template.replace("[[ function-index ]]", functionIndex(tokens));
+var result = template.
+        replace("[[ function-index ]]", functionIndex(fns)).
+        replace("[[ function-docs ]]", functionDocs(fns));
 
 fs.writeFileSync("../README.md", result, "utf-8");

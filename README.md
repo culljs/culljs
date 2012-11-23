@@ -36,37 +36,163 @@ functions.
 
 ## Function list
 
- - isSeq (seq)
- - toSeq (value)
- - doall (fn, seq)
- - isFunction (fn)
- - reduce (fn, initial, seq)
- - all (fn, seq)
- - some (fn, seq)
- - onlySome (fn, seq)
- - trim (string)
- - identity (arg)
- - defined (o)
- - unary (fn)
- - prop (name)
- - func (name, args)
- - eq (one)
- - compose (funcs, thisp)
- - callWith ()
- - partial (fn)
- - bind (obj, methOrProp)
- - handler (handlr, type)
- - map (fn, coll)
- - negate (pred)
- - reject (pred, seq)
- - concat (seq, items)
- - partition (n, seq)
- - mapdef (fn, coll)
- - mapcat (fn, coll)
- - interpose (sep, coll)
- - after (obj, name, fn)
- - before (obj, name, fn)
- - around (obj, name, fn)
+* [isSeq](#isSeq-seq) `(seq)`
+* [toSeq](#toSeq-value) `(value)`
+* [doall](#doall-fn-seq) `(fn, seq)`
+* [isFunction](#isFunction-fn) `(fn)`
+* [reduce](#reduce-fn-initial-seq) `(fn, initial, seq)`
+* [all](#all-fn-seq) `(fn, seq)`
+* [some](#some-fn-seq) `(fn, seq)`
+* [onlySome](#onlySome-fn-seq) `(fn, seq)`
+* [trim](#trim-string) `(string)`
+* [identity](#identity-arg) `(arg)`
+* [defined](#defined-o) `(o)`
+* [unary](#unary-fn) `(fn)`
+* [prop](#prop-name) `(name)`
+* [func](#func-name-args) `(name, args)`
+* [eq](#eq-one) `(one)`
+* [compose](#compose-funcs-thisp) `(funcs, thisp)`
+* [callWith](#callWith) `()`
+* [partial](#partial-fn) `(fn)`
+* [bind](#bind-obj-methOrProp) `(obj, methOrProp)`
+* [handler](#handler-handlr-type) `(handlr, type)`
+* [map](#map-fn-coll) `(fn, coll)`
+* [negate](#negate-pred) `(pred)`
+* [reject](#reject-pred-seq) `(pred, seq)`
+* [concat](#concat-seq-items) `(seq, items)`
+* [partition](#partition-n-seq) `(n, seq)`
+* [mapdef](#mapdef-fn-coll) `(fn, coll)`
+* [mapcat](#mapcat-fn-coll) `(fn, coll)`
+* [interpose](#interpose-sep-coll) `(sep, coll)`
+* [after](#after-obj-name-fn) `(obj, name, fn)`
+* [before](#before-obj-name-fn) `(obj, name, fn)`
+* [around](#around-obj-name-fn) `(obj, name, fn)`
+
+## Documentation
+
+### isSeq `(seq)`
+
+Is SEQ an object with a numeric length, but not a DOM element?
+
+### toSeq `(value)`
+
+Returns a version of VALUE that is an actual Array.
+
+### doall `(fn, seq)`
+
+Calls FN on every item in SEQ, presumably for side-effects.
+
+### isFunction `(fn)`
+
+Is FN a function?
+
+### reduce `(fn, initial, seq)`
+
+Returns the result of applying FN to INITIAL and the first item in SEQ, then applying FN to that result and the 2nd item, etc. If SEQ contains no items, returns INITIAL and FN is not called.
+
+### all `(fn, seq)`
+
+
+
+### some `(fn, seq)`
+
+
+
+### onlySome `(fn, seq)`
+
+
+
+### trim `(string)`
+
+
+
+### identity `(arg)`
+
+
+
+### defined `(o)`
+
+
+
+### unary `(fn)`
+
+
+
+### prop `(name)`
+
+
+
+### func `(name, args)`
+
+
+
+### eq `(one)`
+
+
+
+### compose `(funcs, thisp)`
+
+
+
+### callWith `()`
+
+
+
+### partial `(fn)`
+
+
+
+### bind `(obj, methOrProp)`
+
+
+
+### handler `(handlr, type)`
+
+
+
+### map `(fn, coll)`
+
+
+
+### negate `(pred)`
+
+
+
+### reject `(pred, seq)`
+
+
+
+### concat `(seq, items)`
+
+
+
+### partition `(n, seq)`
+
+
+
+### mapdef `(fn, coll)`
+
+
+
+### mapcat `(fn, coll)`
+
+
+
+### interpose `(sep, coll)`
+
+
+
+### after `(obj, name, fn)`
+
+
+
+### before `(obj, name, fn)`
+
+
+
+### around `(obj, name, fn)`
+
+
 
 ## License
 
