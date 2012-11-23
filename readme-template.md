@@ -36,37 +36,7 @@ functions.
 
 ## Function list
 
- - isSeq (seq)
- - toSeq (value)
- - doall (fn, seq)
- - isFunction (fn)
- - reduce (fn, initial, seq)
- - all (fn, seq)
- - some (fn, seq)
- - onlySome (fn, seq)
- - trim (string)
- - identity (arg)
- - defined (o)
- - unary (fn)
- - prop (name)
- - func (name, args)
- - eq (one)
- - compose (funcs, thisp)
- - callWith ()
- - partial (fn)
- - bind (obj, methOrProp)
- - handler (handlr, type)
- - map (fn, coll)
- - negate (pred)
- - reject (pred, seq)
- - concat (seq, items)
- - partition (n, seq)
- - mapdef (fn, coll)
- - mapcat (fn, coll)
- - interpose (sep, coll)
- - after (obj, name, fn)
- - before (obj, name, fn)
- - around (obj, name, fn)
+[[ function-index ]]
 
 ## License
 

@@ -1,0 +1,72 @@
+#!/usr/bin/env node
+
+var fs = require("fs");
+var ZeParser = require("zeparser").ZeParser;
+
+function nodesWithValue(value, tokens) {
+    return tokens.filter(function (node) {
+        return node.value === value;
+    });
+}
+
+function firstWithValueAfter(value, node, tokens) {
+    var i = node.tokposw;
+    while (tokens[++i] && tokens[i].value !== value) {}
+    return tokens[i];
+}
+
+function fnListComment(tokens) {
+    var nodes = nodesWithValue("/** docs:function-list */", tokens);
+    if (!nodes.length === 1) {
+        throw new Error("Should be exactly one comment signifying where the function-list is, like this: /* docs:function-list */");
+    }
+    return nodes[0];
+}
+
+function fnName(o) {
+    return o.funcName && o.funcName.value;
+}
+
+function val(o) { return o.value; }
+
+function fnParams(o) {
+    return o.paramNames ? o.paramNames.map(val) : [];
+}
+
+function fnSignature(o) {
+    return "(" + fnParams(o).join(", ") + ")";
+}
+
+function fnList(tokens) {
+    var objectLiteral = firstWithValueAfter("{", fnListComment(tokens), tokens);
+    return objectLiteral.targetScope.functions;
+}
+
+function publicFnList(tokens) {
+    return fnList(tokens).filter(function (o) {
+        var name = fnName(o);
+        return name && name[0] !== "_";
+    });
+}
+
+function functionIndex1(o) {
+    return " - " + fnName(o) + " " + fnSignature(o);
+}
+
+function functionIndex(tokens) {
+    return publicFnList(tokens).map(functionIndex1).join("\n");
+}
+
+function loadCullTokens(path) {
+    var cull = fs.readFileSync(path, "utf-8");
+    var p = ZeParser.createParser(cull);
+    p.tokenizer.fixValues();
+    return p.tokenizer.wtree;
+}
+
+var tokens = loadCullTokens("../lib/cull.js");
+var template = fs.readFileSync("../readme-template.md", "utf-8");
+
+var result = template.replace("[[ function-index ]]", functionIndex(tokens));
+
+fs.writeFileSync("../README.md", result, "utf-8");
