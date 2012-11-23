@@ -97,7 +97,14 @@ function functionIndex(fns) {
 }
 
 function functionDocs1(fn) {
-    return "### " + fnName(fn) + " `" + fnSignature(fn) + "`\n\n" + docCommentFor(fn);
+    return [
+        "### ",
+        fnName(fn),
+        " `",
+        fnSignature(fn),
+        "`\n\n",
+        docCommentFor(fn)
+    ].join("");
 }
 
 function functionDocs(fns) {

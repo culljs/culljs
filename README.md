@@ -41,8 +41,8 @@ functions.
 * [doall](#doall-fn-seq) `(fn, seq)`
 * [isFunction](#isFunction-fn) `(fn)`
 * [reduce](#reduce-fn-initial-seq) `(fn, initial, seq)`
-* [all](#all-fn-seq) `(fn, seq)`
-* [some](#some-fn-seq) `(fn, seq)`
+* [all](#all-pred-seq) `(pred, seq)`
+* [some](#some-pred-seq) `(pred, seq)`
 * [onlySome](#onlySome-fn-seq) `(fn, seq)`
 * [trim](#trim-string) `(string)`
 * [identity](#identity-arg) `(arg)`
@@ -72,59 +72,59 @@ functions.
 
 ### isSeq `(seq)`
 
-Is SEQ an object with a numeric length, but not a DOM element?
+Is `seq` an object with a numeric length, but not a DOM element?
 
 ### toSeq `(value)`
 
-Returns a version of VALUE that is an actual Array.
+Returns a version of `value` that is an actual Array.
 
 ### doall `(fn, seq)`
 
-Calls FN on every item in SEQ, presumably for side-effects.
+Calls `fn` on every item in `seq`, presumably for side-effects.
 
 ### isFunction `(fn)`
 
-Is FN a function?
+Is `fn` a function?
 
 ### reduce `(fn, initial, seq)`
 
-Returns the result of applying FN to INITIAL and the first item in SEQ, then applying FN to that result and the 2nd item, etc. If SEQ contains no items, returns INITIAL and FN is not called.
+Returns the result of applying `fn` to `initial` and the first item in `seq`, then applying `fn` to that result and the 2nd item, etc.  Can also be called without `initial`, in which case the first invocation of `fn` will be with the first two items in `seq`.
 
-### all `(fn, seq)`
+### all `(pred, seq)`
 
+Is `pred` truthy for all items in `seq`?
 
+### some `(pred, seq)`
 
-### some `(fn, seq)`
-
-
+Is `pred` truthy for any items in `seq`?
 
 ### onlySome `(fn, seq)`
 
-
+Is `pred` truthy for at least one item in `seq`, and also falsy for at least one item in `seq`?
 
 ### trim `(string)`
 
-
+Returns `string` with white space at either end removed.
 
 ### identity `(arg)`
 
-
+Returns `arg` unchanged.
 
 ### defined `(o)`
 
-
+Is `o` neither undefined nor null?
 
 ### unary `(fn)`
 
-
+Returns a version of `fn` that only accepts one argument.
 
 ### prop `(name)`
 
-
+Returns a function that takes one argument and returns its `name`-property.
 
 ### func `(name, args)`
 
-
+Returns a function that takes one argument and calls its `name`-function with `args` (optional).
 
 ### eq `(one)`
 
