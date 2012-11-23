@@ -8,7 +8,7 @@ Cull is a toolbelt for writing functional javascript. It is based on some core v
  * **No wrapping** - work with native arrays and DOM elements
  * **Fail early** - complains loudly about API misuse in development
 
-This is totally a work in progress. Core values may be discarded at a whim. ;-)
+This is totally a work in progress. Hell, it isn't even documented yet.
 
 ## A consistent API
 
