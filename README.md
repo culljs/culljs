@@ -76,7 +76,10 @@ functions.
 Is `seq` an object with a numeric length, but not a DOM element?
 
 ```js
-
+assert(cull.isSeq([]));
+refute(cull.isSeq({}));
+assert(cull.isSeq({ length: 4 }));
+refute(cull.isSeq({ length: 4, tagName: "DIV" }));
 ```
 
 ### toSeq `(value)`
@@ -84,8 +87,12 @@ Is `seq` an object with a numeric length, but not a DOM element?
 Returns a version of `value` that is an actual Array.
 
 ```js
-var arr = [1, 2, 3];
-assert.same(cull.toSeq(arr), arr);
+assert.equals(cull.toSeq(1), [1]);
+assert.equals(cull.toSeq(null), []);
+assert.equals(cull.toSeq(undefined), []);
+
+var args = function () { return arguments; };
+assert.isArray(cull.toSeq(args(1, 2, 3)));
 ```
 
 ### doall `(fn, list)`
@@ -93,7 +100,11 @@ assert.same(cull.toSeq(arr), arr);
 Calls `fn` on every item in `list`, presumably for side-effects.
 
 ```js
-
+var result = [];
+cull.doall(function (item) {
+    result.unshift(square(item));
+}, [1, 2, 3, 4]);
+assert.equals(result, [16, 9, 4, 1]);
 ```
 
 ### isFunction `(fn)`
@@ -101,7 +112,9 @@ Calls `fn` on every item in `list`, presumably for side-effects.
 Is `fn` a function?
 
 ```js
-
+assert(cull.isFunction(function () {}));
+assert(cull.isFunction(square));
+refute(cull.isFunction({}));
 ```
 
 ### reduce `(fn, initial, list)`
@@ -117,6 +130,7 @@ invocation of `fn` will be with the first two items in `list`.
 var seq = [1, 2, 3, 4];
 var add = function (a, b) { return a + b; };
 assert.equals(cull.reduce(add, seq), 10);
+assert.equals(cull.reduce(add, 5, seq), 15);
 ```
 
 ### all `(pred, list)`
@@ -124,7 +138,8 @@ assert.equals(cull.reduce(add, seq), 10);
 Is `pred` truthy for all items in `list`?
 
 ```js
-assert(cull.all(cull.identity, [1, 2, 3, 4]));
+refute(cull.all(isEven, [1, 2, 3, 4]));
+assert(cull.all(isEven, [2, 4, 6, 8]));
 ```
 
 ### some `(pred, list)`
@@ -132,7 +147,8 @@ assert(cull.all(cull.identity, [1, 2, 3, 4]));
 Is `pred` truthy for any items in `list`?
 
 ```js
-assert(cull.some(cull.identity, [1, 0, 3, 0]));
+assert(cull.some(isEven, [1, 2, 3, 4]));
+refute(cull.some(isEven, [1, 3, 5, 7]));
 ```
 
 ### onlySome `(pred, list)`
@@ -141,7 +157,9 @@ Is `pred` truthy for at least one item in `list`, and also falsy
 for at least one item in `list`?
 
 ```js
-assert(cull.onlySome(cull.identity, [1, 0, 1]));
+assert(cull.onlySome(isEven, [1, 2, 3, 4]));
+refute(cull.onlySome(isEven, [2, 4, 6, 8]));
+refute(cull.onlySome(isEven, [1, 3, 5, 7]));
 ```
 
 ### trim `(string)`
@@ -149,7 +167,8 @@ assert(cull.onlySome(cull.identity, [1, 0, 1]));
 Returns `string` with white space at either end removed.
 
 ```js
-
+assert.equals(cull.trim("  abc  "), "abc");
+assert.equals(cull.trim("  abc  def  "), "abc  def");
 ```
 
 ### identity `(arg)`
@@ -157,7 +176,7 @@ Returns `string` with white space at either end removed.
 Returns `arg` unchanged.
 
 ```js
-assert.equals(cull.identity(4, 2), 4);
+assert.equals(cull.identity(4), 4);
 ```
 
 ### defined `(o)`
@@ -165,7 +184,9 @@ assert.equals(cull.identity(4, 2), 4);
 Is `o` neither undefined nor null?
 
 ```js
-
+assert(cull.defined({}));
+refute(cull.defined(null));
+refute(cull.defined(undefined));
 ```
 
 ### unary `(fn)`
@@ -173,7 +194,8 @@ Is `o` neither undefined nor null?
 Returns a version of `fn` that only accepts one argument.
 
 ```js
-
+var add = function (a, b) { return a + b; };
+assert.isNaN(cull.unary(add)(2, 3));
 ```
 
 ### prop `(name)`
@@ -296,7 +318,8 @@ Returns the complement of `pred`, ie a function that returns true
 when `pred` would be falsy, and false when `pred` would be truthy.
 
 ```js
-
+var isOdd = cull.negate(isEven);
+assert(isOdd(5));
 ```
 
 ### reject `(pred, list)`

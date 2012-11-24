@@ -3,6 +3,9 @@ if (typeof require === "function" && typeof module !== "undefined") {
     var cull = require("../lib/cull");
 }
 
+function isEven(n) { return n % 2 === 0; }
+function square(n) { return n * n; }
+
 (function () {
     "use strict";
 
@@ -17,21 +20,34 @@ if (typeof require === "function" && typeof module !== "undefined") {
     };
 
     buster.testCase("cull", {
+        "isSeq": {
+            "example": function () {
+                assert(cull.isSeq([]));
+                refute(cull.isSeq({}));
+                assert(cull.isSeq({ length: 4 }));
+                refute(cull.isSeq({ length: 4, tagName: "DIV" }));
+            }
+        },
+
         "reduce": {
-            "sums numbers": function () {
+            "example": function () {
                 var seq = [1, 2, 3, 4];
                 var add = function (a, b) { return a + b; };
                 assert.equals(cull.reduce(add, seq), 10);
-            },
-
-            "sums numbers with seed value": function () {
-                var seq = [1, 2, 3, 4];
-                var add = function (a, b) { return a + b; };
                 assert.equals(cull.reduce(add, 5, seq), 15);
             }
         },
 
         "toSeq": {
+            "example": function () {
+                assert.equals(cull.toSeq(1), [1]);
+                assert.equals(cull.toSeq(null), []);
+                assert.equals(cull.toSeq(undefined), []);
+
+                var args = function () { return arguments; };
+                assert.isArray(cull.toSeq(args(1, 2, 3)));
+            },
+
             "returns array unmodified": function () {
                 var arr = [1, 2, 3];
                 assert.same(cull.toSeq(arr), arr);
@@ -59,7 +75,51 @@ if (typeof require === "function" && typeof module !== "undefined") {
             }
         },
 
+        "doall": {
+            "example": function () {
+                var result = [];
+                cull.doall(function (item) {
+                    result.unshift(square(item));
+                }, [1, 2, 3, 4]);
+                assert.equals(result, [16, 9, 4, 1]);
+            }
+        },
+
+        "isFunction": {
+            "example": function () {
+                assert(cull.isFunction(function () {}));
+                assert(cull.isFunction(square));
+                refute(cull.isFunction({}));
+            }
+        },
+
+        "trim": {
+            "example": function () {
+                assert.equals(cull.trim("  abc  "), "abc");
+                assert.equals(cull.trim("  abc  def  "), "abc  def");
+            }
+        },
+
+        "defined": {
+            "example": function () {
+                assert(cull.defined({}));
+                refute(cull.defined(null));
+                refute(cull.defined(undefined));
+            }
+        },
+
+        "unary": {
+            "example": function () {
+                var add = function (a, b) { return a + b; };
+                assert.isNaN(cull.unary(add)(2, 3));
+            }
+        },
+
         "identity": {
+            "example": function () {
+                assert.equals(cull.identity(4), 4);
+            },
+
             "returns first argument": function () {
                 assert.equals(cull.identity(4, 2), 4);
             },
@@ -74,6 +134,11 @@ if (typeof require === "function" && typeof module !== "undefined") {
         },
 
         "all": {
+            "example": function () {
+                refute(cull.all(isEven, [1, 2, 3, 4]));
+                assert(cull.all(isEven, [2, 4, 6, 8]));
+            },
+
             "is true for all truthy values": function () {
                 assert(cull.all(cull.identity, [1, 2, 3, 4]));
             },
@@ -84,6 +149,11 @@ if (typeof require === "function" && typeof module !== "undefined") {
         },
 
         "some": {
+            "example": function () {
+                assert(cull.some(isEven, [1, 2, 3, 4]));
+                refute(cull.some(isEven, [1, 3, 5, 7]));
+            },
+
             "is true for some truthy values": function () {
                 assert(cull.some(cull.identity, [1, 0, 3, 0]));
             },
@@ -94,6 +164,12 @@ if (typeof require === "function" && typeof module !== "undefined") {
         },
 
         "onlySome": {
+            "example": function () {
+                assert(cull.onlySome(isEven, [1, 2, 3, 4]));
+                refute(cull.onlySome(isEven, [2, 4, 6, 8]));
+                refute(cull.onlySome(isEven, [1, 3, 5, 7]));
+            },
+
             "is true when there is a mix": function () {
                 assert(cull.onlySome(cull.identity, [1, 0, 1]));
             },
@@ -440,6 +516,13 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 var items = [0, 1, 2, null, 3, 4, undefined, 5, 6];
                 var result = cull.select(function (i) { return !!i; }, items);
                 assert.equals(result, [1, 2, 3, 4, 5, 6]);
+            }
+        },
+
+        "negate": {
+            "example": function () {
+                var isOdd = cull.negate(isEven);
+                assert(isOdd(5));
             }
         },
 
