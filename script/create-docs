@@ -17,14 +17,14 @@ function firstWithValueAfter(value, node, tokens) {
 
 var doc_comment_start = /^\/\*\*/;
 
-function docCommentNodeFor(node) {
+function docCommentNodeFor(node, cullTokens) {
     var i = node.tokposw;
-    while (tokens[--i] && !tokens[i].value.match(doc_comment_start)) {
-        if (tokens[i].tokposb) {
+    while (cullTokens[--i] && !cullTokens[i].value.match(doc_comment_start)) {
+        if (cullTokens[i].tokposb) {
             return null; // found non-whitespace/non-comment before doc comment
         }
     }
-    return tokens[i];
+    return cullTokens[i];
 }
 
 var spaces_star_spaces = / *\* */;
@@ -42,8 +42,8 @@ function stripCommentMarkers(comment) {
     return comment;
 }
 
-function docCommentFor(node) {
-    var comment = docCommentNodeFor(node);
+function docCommentFor(node, cullTokens) {
+    var comment = docCommentNodeFor(node, cullTokens);
     return comment ? stripCommentMarkers(comment.value) : "";
 }
 
@@ -96,34 +96,61 @@ function functionIndex(fns) {
     return fns.map(functionIndex1).join("\n");
 }
 
-function functionDocs1(fn) {
+function trim(s) {
+    return s.trim();
+}
+
+function trimLines(s) {
+    return s.split("\n").map(trim).join("\n").trim();
+}
+
+function fnBody(fn, contents) {
+    return contents.substring(fn.lhc.start + 1, fn.rhc.stop - 1);
+}
+
+function examplesFor(name, testTokens, testContents) {
+    var contextNodes = nodesWithValue('"' + name + '"', testTokens);
+    if (!contextNodes || !contextNodes.length) return "";
+    var fn = firstWithValueAfter("function", contextNodes[0], testTokens);
+    return trimLines(fnBody(fn, testContents));
+}
+
+function functionDocs1(cullTokens, testTokens, testContents, fn) {
     return [
         "### ",
         fnName(fn),
         " `",
         fnSignature(fn),
         "`\n\n",
-        docCommentFor(fn)
+        docCommentFor(fn, cullTokens),
+        "\n\n",
+        "```js\n",
+        examplesFor(fnName(fn), testTokens, testContents),
+        "\n```"
     ].join("");
 }
 
-function functionDocs(fns) {
-    return fns.map(functionDocs1).join("\n\n");
+function functionDocs(fns, cullTokens, testTokens, testContents) {
+    var fn = functionDocs1.bind(null, cullTokens, testTokens, testContents);
+    return fns.map(fn).join("\n\n");
 }
 
-function loadCullTokens(path) {
-    var cull = fs.readFileSync(path, "utf-8");
-    var p = ZeParser.createParser(cull);
+function loadTokens(contents) {
+    var p = ZeParser.createParser(contents);
     p.tokenizer.fixValues();
     return p.tokenizer.wtree;
 }
 
-var tokens = loadCullTokens("../lib/cull.js");
+var cullTokens = loadTokens(fs.readFileSync("../lib/cull.js", "utf-8"));
+
+var testContents = fs.readFileSync("../test/cull-test.js", "utf-8");
+var testTokens = loadTokens(testContents);
+
 var template = fs.readFileSync("../readme-template.md", "utf-8");
-var fns = publicFnList(tokens);
+var fns = publicFnList(cullTokens);
 
 var result = template.
         replace("[[ function-index ]]", functionIndex(fns)).
-        replace("[[ function-docs ]]", functionDocs(fns));
+        replace("[[ function-docs ]]", functionDocs(fns, cullTokens, testTokens, testContents));
 
 fs.writeFileSync("../README.md", result, "utf-8");

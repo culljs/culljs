@@ -74,17 +74,34 @@ functions.
 
 Is `seq` an object with a numeric length, but not a DOM element?
 
+```js
+
+```
+
 ### toSeq `(value)`
 
 Returns a version of `value` that is an actual Array.
+
+```js
+var arr = [1, 2, 3];
+assert.same(cull.toSeq(arr), arr);
+```
 
 ### doall `(fn, list)`
 
 Calls `fn` on every item in `list`, presumably for side-effects.
 
+```js
+
+```
+
 ### isFunction `(fn)`
 
 Is `fn` a function?
+
+```js
+
+```
 
 ### reduce `(fn, initial, list)`
 
@@ -95,49 +112,99 @@ item, etc.
 Can also be called without `initial`, in which case the first
 invocation of `fn` will be with the first two items in `list`.
 
+```js
+var seq = [1, 2, 3, 4];
+var add = function (a, b) { return a + b; };
+assert.equals(cull.reduce(add, seq), 10);
+```
+
 ### all `(pred, list)`
 
 Is `pred` truthy for all items in `list`?
 
+```js
+assert(cull.all(cull.identity, [1, 2, 3, 4]));
+```
+
 ### some `(pred, list)`
 
 Is `pred` truthy for any items in `list`?
+
+```js
+assert(cull.some(cull.identity, [1, 0, 3, 0]));
+```
 
 ### onlySome `(pred, list)`
 
 Is `pred` truthy for at least one item in `list`, and also falsy
 for at least one item in `list`?
 
+```js
+assert(cull.onlySome(cull.identity, [1, 0, 1]));
+```
+
 ### trim `(string)`
 
 Returns `string` with white space at either end removed.
+
+```js
+
+```
 
 ### identity `(arg)`
 
 Returns `arg` unchanged.
 
+```js
+assert.equals(cull.identity(4, 2), 4);
+```
+
 ### defined `(o)`
 
 Is `o` neither undefined nor null?
 
+```js
+
+```
+
 ### unary `(fn)`
 
 Returns a version of `fn` that only accepts one argument.
+
+```js
+
+```
 
 ### prop `(name)`
 
 Returns a function that takes one argument and returns its
 `name`-property.
 
+```js
+assert.equals(cull.prop("id")({ id: 42 }), 42);
+```
+
 ### func `(name, args)`
 
 Returns a function that takes one argument and calls its
 `name`-function with `args` (optional).
 
+```js
+var f = cull.func("getId");
+var obj = { getId: function () { return 42; } };
+assert.equals(42, f(obj));
+```
+
 ### eq `(x)`
 
 Returns a function that takes one argument and returns true if
 it is equal to `x`.
+
+```js
+var isFive = cull.eq(5);
+assert(isFive(5));
+refute(isFive("5"));
+```
 
 ### compose `(fns, thisp)`
 
@@ -145,10 +212,21 @@ Returns a function that calls the last function in `fns`, then
 calls the second to last function in `fns` with the result of
 the first, and so on, with an optional this-binding in `thisp`.
 
+```js
+var identity = cull.compose();
+assert.equals(identity(2, 3), 2);
+```
+
 ### callWith `()`
 
 Takes any number of arguments, and returns a function that
 takes one function and calls it with the arguments.
+
+```js
+var add = function (a, b) { return a + b; };
+var fn = cull.callWith(1, 2);
+assert.equals(fn(add), 3);
+```
 
 ### partial `(fn)`
 
@@ -156,6 +234,12 @@ Takes a function `fn` and any number of additional arguments,
 fewer than the normal arguments to `fn`, and returns a
 function. When called, the returned function calls `fn` with
 the given arguments first and then additional args.
+
+```js
+var fn = function (a, b) { return a + b; };
+var curried = cull.partial(fn, 3);
+assert.equals(curried(5), 8);
+```
 
 ### bind `(obj, callee)`
 
@@ -166,6 +250,21 @@ case it will be used to look up a method on `obj`.
 Optionally takes additional arguments that are partially
 applied.
 
+```js
+var func = this.spy();
+var obj = {};
+var bound = cull.bind(obj, func);
+
+bound();
+assert.equals(func.thisValues[0], obj);
+
+bound.call({});
+assert.equals(func.thisValues[1], obj);
+
+bound.apply({});
+assert.equals(func.thisValues[2], obj);
+```
+
 ### handler `(handlr, method)`
 
 If `handlr` is a function, returns it. If `handlr` is an
@@ -174,25 +273,52 @@ object, returns a function that calls the `method` fn on `handlr`.
 Optionally takes additional arguments that are partially
 applied.
 
+```js
+var fn = function () {};
+var handler = cull.handler(fn, "eventName");
+assert.same(fn, handler);
+```
+
 ### map `(fn, list)`
 
 Returns a new list consisting of the result of applying `fn` to
 the items in `list`.
+
+```js
+var square = function (num) { return num * num; };
+assert.equals(cull.map(square, [1, 2, 3]), [1, 4, 9]);
+```
 
 ### negate `(pred)`
 
 Returns the complement of `pred`, ie a function that returns true
 when `pred` would be falsy, and false when `pred` would be truthy.
 
+```js
+
+```
+
 ### reject `(pred, list)`
 
 Returns a new list of the items in `list` for which `pred`
 returns nil.
 
+```js
+var items = [1, 2, 3, 4, 5];
+var odd = function (n) { return n % 2; };
+assert.equals(cull.reject(odd, items), [2, 4]);
+```
+
 ### concat `(list1, list2)`
 
 Returns a new list with the concatenation of the elements in
 `list1` and `list2`.
+
+```js
+var a = [1, 2, 3];
+var b = [4, 5, 6];
+assert.equals(cull.concat(a, b), [1, 2, 3, 4, 5, 6]);
+```
 
 ### partition `(n, list)`
 
@@ -201,11 +327,26 @@ Returns a new list with the items in `list` grouped into
 
 The last group may contain less than `n` items.
 
+```js
+var n = 2;
+var result = cull.partition(n, [1, 2]);
+assert.equals(result, [[1, 2]]);
+```
+
 ### mapdef `(fn, list)`
 
 Returns a new list consisting of the result of applying `fn` to
 the items in `list`, but filtering out all null or undefined
 values from both `list` and the resulting list.
+
+```js
+this.list = [
+{ id: 1 },
+{ id: 2 },
+{ different: false },
+{ id: 3 }
+];
+```
 
 ### mapcat `(fn, list)`
 
@@ -213,10 +354,23 @@ Returns the result of applying concat to the result of applying
 map to `fn` and `list`. Thus function `fn` should return a
 collection.
 
+```js
+var dbl = function (single) { return [single, single]; };
+assert.equals(
+cull.mapcat(dbl, [1, 2, 3]),
+[1, 1, 2, 2, 3, 3]
+);
+```
+
 ### interpose `(sep, list)`
 
 Returns a new list of all elements in `list` separated by
 `sep`.
+
+```js
+var result = cull.interpose(":", [1, 2, 3]);
+assert.equals(result, [1, ":", 2, ":", 3]);
+```
 
 ### after `(obj, name, fn)`
 
@@ -226,11 +380,28 @@ method as its first argument, then the methods original
 arguments. If `fn` returns anything, it will override the
 return value of the method.
 
+```js
+cull.after(this.obj, "fn", function (ret, x) {
+this.list.push(ret * x);
+});
+
+this.obj.fn(3, 2);
+
+assert.equals(this.obj.list, [3, 3]);
+```
+
 ### before `(obj, name, fn)`
 
 Advices the method `name` on `obj`, calling `fn` before the
 method is called. `fn` is called with the same arguments as the
 method.
+
+```js
+setupAdvice.call(this);
+cull.before(this.obj, "fn", function (x) {
+this.list.push(x - 1);
+});
+```
 
 ### around `(obj, name, fn)`
 
@@ -238,6 +409,12 @@ Advices the method `name` on `obj`, calling `fn` instead of the
 method. `fn` receives the original method as its first
 argument, and then the methods original arguments. It is up to
 the advicing function if and how the original method is called.
+
+```js
+cull.around(this.obj, "fn", function () {});
+this.obj.fn(3);
+assert.equals(this.obj.list, []);
+```
 
 ## License
 
