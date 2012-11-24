@@ -38,32 +38,32 @@ functions.
 
 * [isSeq](#isSeq-seq) `(seq)`
 * [toSeq](#toSeq-value) `(value)`
-* [doall](#doall-fn-seq) `(fn, seq)`
+* [doall](#doall-fn-list) `(fn, list)`
 * [isFunction](#isFunction-fn) `(fn)`
-* [reduce](#reduce-fn-initial-seq) `(fn, initial, seq)`
-* [all](#all-pred-seq) `(pred, seq)`
-* [some](#some-pred-seq) `(pred, seq)`
-* [onlySome](#onlySome-fn-seq) `(fn, seq)`
+* [reduce](#reduce-fn-initial-list) `(fn, initial, list)`
+* [all](#all-pred-list) `(pred, list)`
+* [some](#some-pred-list) `(pred, list)`
+* [onlySome](#onlySome-pred-list) `(pred, list)`
 * [trim](#trim-string) `(string)`
 * [identity](#identity-arg) `(arg)`
 * [defined](#defined-o) `(o)`
 * [unary](#unary-fn) `(fn)`
 * [prop](#prop-name) `(name)`
 * [func](#func-name-args) `(name, args)`
-* [eq](#eq-one) `(one)`
-* [compose](#compose-funcs-thisp) `(funcs, thisp)`
+* [eq](#eq-x) `(x)`
+* [compose](#compose-fns-thisp) `(fns, thisp)`
 * [callWith](#callWith) `()`
 * [partial](#partial-fn) `(fn)`
-* [bind](#bind-obj-methOrProp) `(obj, methOrProp)`
-* [handler](#handler-handlr-type) `(handlr, type)`
-* [map](#map-fn-coll) `(fn, coll)`
+* [bind](#bind-obj-callee) `(obj, callee)`
+* [handler](#handler-handlr-method) `(handlr, method)`
+* [map](#map-fn-list) `(fn, list)`
 * [negate](#negate-pred) `(pred)`
-* [reject](#reject-pred-seq) `(pred, seq)`
-* [concat](#concat-seq-items) `(seq, items)`
-* [partition](#partition-n-seq) `(n, seq)`
-* [mapdef](#mapdef-fn-coll) `(fn, coll)`
-* [mapcat](#mapcat-fn-coll) `(fn, coll)`
-* [interpose](#interpose-sep-coll) `(sep, coll)`
+* [reject](#reject-pred-list) `(pred, list)`
+* [concat](#concat-list1-list2) `(list1, list2)`
+* [partition](#partition-n-list) `(n, list)`
+* [mapdef](#mapdef-fn-list) `(fn, list)`
+* [mapcat](#mapcat-fn-list) `(fn, list)`
+* [interpose](#interpose-sep-list) `(sep, list)`
 * [after](#after-obj-name-fn) `(obj, name, fn)`
 * [before](#before-obj-name-fn) `(obj, name, fn)`
 * [around](#around-obj-name-fn) `(obj, name, fn)`
@@ -78,29 +78,35 @@ Is `seq` an object with a numeric length, but not a DOM element?
 
 Returns a version of `value` that is an actual Array.
 
-### doall `(fn, seq)`
+### doall `(fn, list)`
 
-Calls `fn` on every item in `seq`, presumably for side-effects.
+Calls `fn` on every item in `list`, presumably for side-effects.
 
 ### isFunction `(fn)`
 
 Is `fn` a function?
 
-### reduce `(fn, initial, seq)`
+### reduce `(fn, initial, list)`
 
-Returns the result of applying `fn` to `initial` and the first item in `seq`, then applying `fn` to that result and the 2nd item, etc.  Can also be called without `initial`, in which case the first invocation of `fn` will be with the first two items in `seq`.
+Returns the result of applying `fn` to `initial` and the first
+item in `list`, then applying `fn` to that result and the 2nd
+item, etc.
 
-### all `(pred, seq)`
+Can also be called without `initial`, in which case the first
+invocation of `fn` will be with the first two items in `list`.
 
-Is `pred` truthy for all items in `seq`?
+### all `(pred, list)`
 
-### some `(pred, seq)`
+Is `pred` truthy for all items in `list`?
 
-Is `pred` truthy for any items in `seq`?
+### some `(pred, list)`
 
-### onlySome `(fn, seq)`
+Is `pred` truthy for any items in `list`?
 
-Is `pred` truthy for at least one item in `seq`, and also falsy for at least one item in `seq`?
+### onlySome `(pred, list)`
+
+Is `pred` truthy for at least one item in `list`, and also falsy
+for at least one item in `list`?
 
 ### trim `(string)`
 
@@ -120,79 +126,118 @@ Returns a version of `fn` that only accepts one argument.
 
 ### prop `(name)`
 
-Returns a function that takes one argument and returns its `name`-property.
+Returns a function that takes one argument and returns its
+`name`-property.
 
 ### func `(name, args)`
 
-Returns a function that takes one argument and calls its `name`-function with `args` (optional).
+Returns a function that takes one argument and calls its
+`name`-function with `args` (optional).
 
-### eq `(one)`
+### eq `(x)`
 
+Returns a function that takes one argument and returns true if
+it is equal to `x`.
 
+### compose `(fns, thisp)`
 
-### compose `(funcs, thisp)`
-
-
+Returns a function that calls the last function in `fns`, then
+calls the second to last function in `fns` with the result of
+the first, and so on, with an optional this-binding in `thisp`.
 
 ### callWith `()`
 
-
+Takes any number of arguments, and returns a function that
+takes one function and calls it with the arguments.
 
 ### partial `(fn)`
 
+Takes a function `fn` and any number of additional arguments,
+fewer than the normal arguments to `fn`, and returns a
+function. When called, the returned function calls `fn` with
+the given arguments first and then additional args.
 
+### bind `(obj, callee)`
 
-### bind `(obj, methOrProp)`
+Returns a function that calls `callee` with `obj` as this.
+`callee` can be a function, or it can be a string - in which
+case it will be used to look up a method on `obj`.
 
+Optionally takes additional arguments that are partially
+applied.
 
+### handler `(handlr, method)`
 
-### handler `(handlr, type)`
+If `handlr` is a function, returns it. If `handlr` is an
+object, returns a function that calls the `method` fn on `handlr`.
 
+Optionally takes additional arguments that are partially
+applied.
 
+### map `(fn, list)`
 
-### map `(fn, coll)`
-
-
+Returns a new list consisting of the result of applying `fn` to
+the items in `list`.
 
 ### negate `(pred)`
 
+Returns the complement of `pred`, ie a function that returns true
+when `pred` would be falsy, and false when `pred` would be truthy.
 
+### reject `(pred, list)`
 
-### reject `(pred, seq)`
+Returns a new list of the items in `list` for which `pred`
+returns nil.
 
+### concat `(list1, list2)`
 
+Returns a new list with the concatenation of the elements in
+`list1` and `list2`.
 
-### concat `(seq, items)`
+### partition `(n, list)`
 
+Returns a new list with the items in `list` grouped into
+`n-`sized sublists.
 
+The last group may contain less than `n` items.
 
-### partition `(n, seq)`
+### mapdef `(fn, list)`
 
+Returns a new list consisting of the result of applying `fn` to
+the items in `list`, but filtering out all null or undefined
+values from both `list` and the resulting list.
 
+### mapcat `(fn, list)`
 
-### mapdef `(fn, coll)`
+Returns the result of applying concat to the result of applying
+map to `fn` and `list`. Thus function `fn` should return a
+collection.
 
+### interpose `(sep, list)`
 
-
-### mapcat `(fn, coll)`
-
-
-
-### interpose `(sep, coll)`
-
-
+Returns a new list of all elements in `list` separated by
+`sep`.
 
 ### after `(obj, name, fn)`
 
-
+Advices the method `name` on `obj`, calling `fn` after the
+method is called. `fn` is called with the return value of the
+method as its first argument, then the methods original
+arguments. If `fn` returns anything, it will override the
+return value of the method.
 
 ### before `(obj, name, fn)`
 
-
+Advices the method `name` on `obj`, calling `fn` before the
+method is called. `fn` is called with the same arguments as the
+method.
 
 ### around `(obj, name, fn)`
 
-
+Advices the method `name` on `obj`, calling `fn` instead of the
+method. `fn` receives the original method as its first
+argument, and then the methods original arguments. It is up to
+the advicing function if and how the original method is called.
 
 ## License
 

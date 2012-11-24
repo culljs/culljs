@@ -38,7 +38,7 @@ var comment_end = /\*\//;
 function stripCommentMarkers(comment) {
     comment = comment.replace(doc_comment_start, "");
     comment = comment.replace(comment_end, "");
-    comment = comment.split("\n").map(removeLeadingStars).join(" ").trim();
+    comment = comment.split("\n").map(removeLeadingStars).join("\n").trim();
     return comment;
 }
 
