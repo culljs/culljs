@@ -1,7 +1,7 @@
 # cull.js
 
 Cull is a toolbelt for writing functional javascript. It is based on
-some core values:
+these core values:
 
  * **Pure JavaScript** - no programming in strings
  * **Pure functions** - prefer side-effect free functions wherever possible
@@ -9,7 +9,8 @@ some core values:
  * **No wrapping** - work with native arrays and DOM elements
  * **Fail early** - complains loudly about API misuse in development
 
-This is totally a work in progress. Hell, it isn't even documented yet.
+This is totally a work in progress. The API may change until we reach
+the big one-oh.
 
 ## A consistent API
 
@@ -38,7 +39,7 @@ functions.
 
 [[ function-index ]]
 
-## Documentation
+## Documentation and examples
 
 [[ function-docs ]]
 

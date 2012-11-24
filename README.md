@@ -1,7 +1,7 @@
 # cull.js
 
 Cull is a toolbelt for writing functional javascript. It is based on
-some core values:
+these core values:
 
  * **Pure JavaScript** - no programming in strings
  * **Pure functions** - prefer side-effect free functions wherever possible
@@ -9,7 +9,8 @@ some core values:
  * **No wrapping** - work with native arrays and DOM elements
  * **Fail early** - complains loudly about API misuse in development
 
-This is totally a work in progress. Hell, it isn't even documented yet.
+This is totally a work in progress. The API may change until we reach
+the big one-oh.
 
 ## A consistent API
 
@@ -68,7 +69,7 @@ functions.
 * [before](#before-obj-name-fn) `(obj, name, fn)`
 * [around](#around-obj-name-fn) `(obj, name, fn)`
 
-## Documentation
+## Documentation and examples
 
 ### isSeq `(seq)`
 
@@ -341,10 +342,10 @@ values from both `list` and the resulting list.
 
 ```js
 this.list = [
-{ id: 1 },
-{ id: 2 },
-{ different: false },
-{ id: 3 }
+    { id: 1 },
+    { id: 2 },
+    { different: false },
+    { id: 3 }
 ];
 ```
 
@@ -357,8 +358,8 @@ collection.
 ```js
 var dbl = function (single) { return [single, single]; };
 assert.equals(
-cull.mapcat(dbl, [1, 2, 3]),
-[1, 1, 2, 2, 3, 3]
+    cull.mapcat(dbl, [1, 2, 3]),
+    [1, 1, 2, 2, 3, 3]
 );
 ```
 
@@ -382,7 +383,7 @@ return value of the method.
 
 ```js
 cull.after(this.obj, "fn", function (ret, x) {
-this.list.push(ret * x);
+    this.list.push(ret * x);
 });
 
 this.obj.fn(3, 2);
@@ -399,7 +400,7 @@ method.
 ```js
 setupAdvice.call(this);
 cull.before(this.obj, "fn", function (x) {
-this.list.push(x - 1);
+    this.list.push(x - 1);
 });
 ```
 

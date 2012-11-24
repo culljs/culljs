@@ -96,12 +96,17 @@ function functionIndex(fns) {
     return fns.map(functionIndex1).join("\n");
 }
 
-function trim(s) {
-    return s.trim();
+function chopOff(superflousIndent) {
+    var l = superflousIndent.length;
+    return function (s) {
+        return s.substring(0, l) === superflousIndent ? s.substring(l) : s;
+    };
 }
 
-function trimLines(s) {
-    return s.split("\n").map(trim).join("\n").trim();
+function reduceIndentation(s) {
+    var ss = s.replace(/^\n*/, "").split("\n");
+    var superflousIndent = ss[0].match(/^ */)[0];
+    return ss.map(chopOff(superflousIndent)).join("\n").trim();
 }
 
 function fnBody(fn, contents) {
@@ -112,7 +117,7 @@ function examplesFor(name, testTokens, testContents) {
     var contextNodes = nodesWithValue('"' + name + '"', testTokens);
     if (!contextNodes || !contextNodes.length) return "";
     var fn = firstWithValueAfter("function", contextNodes[0], testTokens);
-    return trimLines(fnBody(fn, testContents));
+    return reduceIndentation(fnBody(fn, testContents));
 }
 
 function functionDocs1(cullTokens, testTokens, testContents, fn) {
