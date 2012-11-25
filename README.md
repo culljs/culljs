@@ -21,7 +21,7 @@ parameter guidelines:
 
 The readability of
 
-    map(name, filter(underage, persons)
+    map(name, filter(underage, persons))
 
 over
 
