@@ -10,7 +10,7 @@
     },
     "homepage": "https://github.com/magnars/culljs",
     "scripts": {
-        "test": "buster test"
+        "test": "./node_modules/.bin/buster-test -e node"
     },
     "engines": {
         "node": "~0.6"
@@ -19,7 +19,7 @@
         "underscore": "~1.3"
     },
     "devDependencies": {
-        "buster": "~0.4",
+        "buster": "~0.6",
         "buster-lint": "~0",
         "uglify-js": "~1.2",
         "zeparser": "*"
