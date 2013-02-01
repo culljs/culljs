@@ -15,12 +15,16 @@
                 refute.exception(function () {
                     d.el.setProp(null, document.createElement("div"));
                 });
-            },
+            }
+        },
 
-            "sets data attribute property": function () {
+        "setData": {
+            "sets data attribute and property": function () {
                 var el = document.createElement("div");
-                d.el.setProp({ "data-preselected": "42" }, el);
-                assert.equals(el["data-preselected"], "42");
+                d.el.setData({ something: 42 }, el);
+
+                assert.equals(el["data-something"], 42);
+                assert.equals(el.getAttribute("data-something"), 42);
             }
         },
 
