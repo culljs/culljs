@@ -100,6 +100,36 @@ if (typeof require === "function" && typeof module !== "undefined") {
                 var frag = d.frag();
                 assert.equals(frag.nodeType, 11);
             }
+        },
+
+        "text": {
+            "returns inner text": function () {
+                var el = document.createElement("p");
+                el.innerHTML = "Hey there";
+
+                assert.equals(cull.dom.text(el), "Hey there");
+            },
+
+            "returns inner text stripped of markup": function () {
+                var el = document.createElement("p");
+                el.innerHTML = "Hey <strong>there</strong>";
+
+                assert.equals(cull.dom.text(el), "Hey there");
+            },
+
+            "ignores comments": function () {
+                var el = document.createElement("p");
+                el.innerHTML = "Hey <!-- OK --><strong>there</strong>";
+
+                assert.equals(cull.dom.text(el), "Hey there");
+            },
+
+            "preserves line-breaks": function () {
+                var el = document.createElement("p");
+                el.innerHTML = "Hey\nThere";
+
+                assert.equals(cull.dom.text(el), "Hey\nThere");
+            }
         }
     });
 }(cull.dom));
