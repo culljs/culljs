@@ -8,6 +8,7 @@ exports["Node tests"] = {
 
 exports["Browser tests"] = {
     environment: "browser",
+    libs: ["node_modules/underscore/underscore-min.js"],
     sources: ["lib/*.js"],
     tests: ["test/*.js", "test/browser/*.js"],
     extensions: [require("buster-lint")],
