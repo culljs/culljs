@@ -4,6 +4,16 @@
     var div = d.el.div;
 
     buster.testCase("Element", {
+        "setData": {
+            "sets data attribute and property": function () {
+                var el = document.createElement("div");
+                d.el.setData({ something: 42 }, el);
+
+                assert.equals(el["data-something"], 42);
+                assert.equals(el.getAttribute("data-something"), 42);
+            }
+        },
+
         "setProp": {
             "sets property on element": function () {
                 var el = document.createElement("div");
@@ -15,16 +25,13 @@
                 refute.exception(function () {
                     d.el.setProp(null, document.createElement("div"));
                 });
-            }
-        },
+            },
 
-        "setData": {
-            "sets data attribute and property": function () {
+            "delegates to setData for data attributes": function () {
                 var el = document.createElement("div");
-                d.el.setData({ something: 42 }, el);
+                d.el.setProp({ data: { something: "hey" } }, el);
 
-                assert.equals(el["data-something"], 42);
-                assert.equals(el.getAttribute("data-something"), 42);
+                assert.equals(el.getAttribute("data-something"), "hey");
             }
         },
 
