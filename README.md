@@ -57,6 +57,14 @@ functions.
 * [partial](#partial-fn) `(fn)`
 * [bind](#bind-obj-callee) `(obj, callee)`
 * [handler](#handler-handlr-method) `(handlr, method)`
+* [flatten](#flatten-seq) `(seq)`
+* [indexOf](#indexOf-needle-seq) `(needle, seq)`
+* [uniq](#uniq-seq) `(seq)`
+* [first](#first-fn-seq) `(fn, seq)`
+* [select](#select-fn-seq) `(fn, seq)`
+* [difference](#difference-seq-other) `(seq, other)`
+* [keys](#keys-object) `(object)`
+* [values](#values-object) `(object)`
 * [map](#map-fn-list) `(fn, list)`
 * [negate](#negate-pred) `(pred)`
 * [reject](#reject-pred-list) `(pred, list)`
@@ -302,6 +310,84 @@ var handler = cull.handler(fn, "eventName");
 assert.same(fn, handler);
 ```
 
+### flatten `(seq)`
+
+Flatten `seq` recursively and return a list of non-seq values
+
+```js
+assert.equals(cull.flatten([1, 2, 3, 4]), [1, 2, 3, 4]);
+```
+
+### indexOf `(needle, seq)`
+
+Return the first index of `needle` in `seq`, otherwise < 0
+
+```js
+assert.equals(1, cull.indexOf("b", ["a", "b", "c"]));
+```
+
+### uniq `(seq)`
+
+Return a list with only the unique values in `seq`
+
+```js
+assert.equals(cull.uniq([1, 2, 3, 4]), [1, 2, 3, 4]);
+```
+
+### first `(fn, seq)`
+
+Return the first item in `seq` for which `fn` returns `true`
+
+```js
+var items = [1, 2, 3, 4];
+var even = function (i) { return i % 2 === 0; };
+assert.equals(cull.first(even, items), 2);
+```
+
+### select `(fn, seq)`
+
+Return a new list containing the items from `seq` for which
+        `fn` is `true`
+
+```js
+var items = [0, 1, 2, null, 3, 4, undefined, 5, 6];
+var result = cull.select(function (i) { return !!i; }, items);
+assert.equals(result, [1, 2, 3, 4, 5, 6]);
+```
+
+### difference `(seq, other)`
+
+Return a list of properties present in `seq` but not in `other`
+
+```js
+var result = cull.difference([1, 2, 3, 4], [2, 3]);
+assert.equals(result, [1, 4]);
+```
+
+### keys `(object)`
+
+Return a list of enumerable own property keys in `object`
+
+```js
+assert.equals(cull.keys({
+    id: 1,
+    num: 42,
+    name: "Mr"
+}), ["id", "num", "name"]);
+```
+
+### values `(object)`
+
+Return a list of enumerable own property values in `object`
+
+```js
+assert.equals(cull.values({
+    id: 1,
+    num: 42,
+    name: "Mr"
+}), [1, 42, "Mr"]);
+```
+
 ### map `(fn, list)`
 
 Returns a new list consisting of the result of applying `fn` to
@@ -442,6 +528,6 @@ assert.equals(this.obj.list, []);
 
 ## License
 
-Copyright © 2012, Christian Johansen and Magnar Sveen. Cull.js uses
-semantic versioning. Code released under the BSD license.
+Copyright © 2012-2013, Christian Johansen and Magnar Sveen. Cull.js
+uses semantic versioning. Code released under the BSD license.
 Documentation released under CC Attribution-Share Alike.

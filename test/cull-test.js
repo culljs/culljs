@@ -30,11 +30,54 @@ function square(n) { return n * n; }
         },
 
         "reduce": {
-            "example": function () {
+            "list": function () {
                 var seq = [1, 2, 3, 4];
                 var add = function (a, b) { return a + b; };
                 assert.equals(cull.reduce(add, seq), 10);
                 assert.equals(cull.reduce(add, 5, seq), 15);
+            },
+
+            "string": function () {
+                var seq = "1234";
+
+                var add = function (a, b) {
+                    return Number(a) + Number(b);
+                };
+
+                assert.equals(cull.reduce(add, seq), 10);
+                assert.equals(cull.reduce(add, 5, seq), 15);
+            }
+        },
+
+        "flatten": {
+            "returns flat array unchanged": function () {
+                assert.equals(cull.flatten([1, 2, 3, 4]), [1, 2, 3, 4]);
+            },
+
+            "flattens nested array": function () {
+                assert.equals(cull.flatten([1, [2], 3, 4]), [1, 2, 3, 4]);
+            },
+
+            "flattens deeply nested array": function () {
+                var arr = [1, [2, [3, 4], 5], 6];
+                assert.equals(cull.flatten(arr), [1, 2, 3, 4, 5, 6]);
+            }
+        },
+
+        "uniq": {
+            "returns array of unique elements untouched": function () {
+                assert.equals(cull.uniq([1, 2, 3, 4]), [1, 2, 3, 4]);
+            },
+
+            "rejects duplicates": function () {
+                var arr = [1, 1, "Hey", { id: 42 }, "Hey", 2];
+                assert.equals(cull.uniq(arr), [1, "Hey", { id: 42 }, 2]);
+            },
+
+            "rejects duplicates by identity": function () {
+                var obj = { id: 42 };
+                var arr = [obj, { id: 42 }, 42, obj];
+                assert.equals(cull.uniq(arr), [{ id: 42 }, { id: 42 }, 42]);
             }
         },
 

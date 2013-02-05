@@ -45,6 +45,6 @@ functions.
 
 ## License
 
-Copyright © 2012, Christian Johansen and Magnar Sveen. Cull.js uses
-semantic versioning. Code released under the BSD license.
+Copyright © 2012-2013, Christian Johansen and Magnar Sveen. Cull.js
+uses semantic versioning. Code released under the BSD license.
 Documentation released under CC Attribution-Share Alike.
