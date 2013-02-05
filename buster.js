@@ -9,7 +9,7 @@ exports["Node tests"] = {
 exports["Browser tests"] = {
     environment: "browser",
     sources: ["lib/cull.js", "lib/*.js"],
-    tests: ["test/*.js", "test/browser/*.js"],
+    tests: ["test/*.js"],
     extensions: [require("buster-lint")],
     "buster-lint": require("./autolint")
 };
