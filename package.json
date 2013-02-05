@@ -1,7 +1,7 @@
 {
     "name": "culljs",
     "humanName": "Cull.JS",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "main": "./lib/cull",
     "description": "A toolbelt for writing functional javascript.",
     "author": { "name": "Christian Johansen and Magnar Sveen" },
