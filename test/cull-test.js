@@ -20,32 +20,32 @@ function square(n) { return n * n; }
     };
 
     buster.testCase("cull", {
-        "isSeq": {
+        "isList": {
             "example": function () {
-                assert(cull.isSeq([]));
-                refute(cull.isSeq({}));
-                assert(cull.isSeq({ length: 4 }));
-                refute(cull.isSeq({ length: 4, tagName: "DIV" }));
+                assert(cull.isList([]));
+                refute(cull.isList({}));
+                assert(cull.isList({ length: 4 }));
+                refute(cull.isList({ length: 4, tagName: "DIV" }));
             }
         },
 
         "reduce": {
             "list": function () {
-                var seq = [1, 2, 3, 4];
+                var list = [1, 2, 3, 4];
                 var add = function (a, b) { return a + b; };
-                assert.equals(cull.reduce(add, seq), 10);
-                assert.equals(cull.reduce(add, 5, seq), 15);
+                assert.equals(cull.reduce(add, list), 10);
+                assert.equals(cull.reduce(add, 5, list), 15);
             },
 
             "string": function () {
-                var seq = "1234";
+                var list = "1234";
 
                 var add = function (a, b) {
                     return Number(a) + Number(b);
                 };
 
-                assert.equals(cull.reduce(add, seq), 10);
-                assert.equals(cull.reduce(add, 5, seq), 15);
+                assert.equals(cull.reduce(add, list), 10);
+                assert.equals(cull.reduce(add, 5, list), 15);
             }
         },
 
@@ -81,40 +81,40 @@ function square(n) { return n * n; }
             }
         },
 
-        "toSeq": {
+        "toList": {
             "example": function () {
-                assert.equals(cull.toSeq(1), [1]);
-                assert.equals(cull.toSeq(null), []);
-                assert.equals(cull.toSeq(undefined), []);
+                assert.equals(cull.toList(1), [1]);
+                assert.equals(cull.toList(null), []);
+                assert.equals(cull.toList(undefined), []);
 
                 var args = function () { return arguments; };
-                assert.isArray(cull.toSeq(args(1, 2, 3)));
+                assert.isArray(cull.toList(args(1, 2, 3)));
             },
 
             "returns array unmodified": function () {
                 var arr = [1, 2, 3];
-                assert.same(cull.toSeq(arr), arr);
+                assert.same(cull.toList(arr), arr);
             },
 
             "returns empty array for null": function () {
-                assert.equals(cull.toSeq(null), []);
+                assert.equals(cull.toList(null), []);
             },
 
             "returns empty array for missing argument": function () {
-                assert.equals(cull.toSeq(), []);
+                assert.equals(cull.toList(), []);
             },
 
             "returns empty array for undefined": function () {
-                assert.equals(cull.toSeq(undefined), []);
+                assert.equals(cull.toList(undefined), []);
             },
 
             "returns scalar as array": function () {
-                assert.equals(cull.toSeq(1), [1]);
+                assert.equals(cull.toList(1), [1]);
             },
 
             "returns arguments as true array": function () {
                 var args = function () { return arguments; };
-                assert.isArray(cull.toSeq(args(1, 2, 3)));
+                assert.isArray(cull.toList(args(1, 2, 3)));
             }
         },
 
@@ -555,13 +555,13 @@ function square(n) { return n * n; }
         },
 
         "partition": {
-            "splits a sequence into n-sized chunks": function () {
+            "splits a listuence into n-sized chunks": function () {
                 var n = 2;
                 var result = cull.partition(n, [1, 2]);
                 assert.equals(result, [[1, 2]]);
             },
 
-            "splits a longer sequence": function () {
+            "splits a longer listuence": function () {
                 var result = cull.partition(2, [1, 2, 3, 4]);
                 assert.equals(result, [[1, 2], [3, 4]]);
             },
@@ -591,7 +591,7 @@ function square(n) { return n * n; }
         },
 
         "interpose": {
-            "returns seq with elements in coll separated by sep": function () {
+            "returns list with elements in coll separated by sep": function () {
                 var result = cull.interpose(":", [1, 2, 3]);
                 assert.equals(result, [1, ":", 2, ":", 3]);
             },
