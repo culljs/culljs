@@ -441,63 +441,6 @@ function square(n) { return n * n; }
             }
         },
 
-        "handler": {
-            "returns function untouched": function () {
-                var fn = function () {};
-                var handler = cull.handler(fn, "eventName");
-                assert.same(fn, handler);
-            },
-
-            "returns function that calls method on object": function () {
-                var object = { click: this.spy() };
-                var handler = cull.handler(object, "click");
-                handler();
-
-                assert.calledOnce(object.click);
-                assert.calledOn(object.click, object);
-            },
-
-            "handler returns method's return value": function () {
-                var object = { click: this.stub().returns(42) };
-                var handler = cull.handler(object, "click");
-                var result = handler();
-
-                assert.equals(result, 42);
-            },
-
-            "handler is called with arguments": function () {
-                var object = { click: this.stub().returns(42) };
-                var handler = cull.handler(object, "click");
-                var result = handler(42, { id: 13 });
-
-                assert.calledWith(object.click, 42, { id: 13 });
-            },
-
-            "handler binds arguments": function () {
-                var object = { click: this.stub().returns(42) };
-                var handler = cull.handler(object, "click", 42);
-                var result = handler("Yo");
-
-                assert.calledWith(object.click, 42, "Yo");
-            },
-
-            "throws if handler object does not have method": function () {
-                var object = {};
-
-                assert.exception(function () {
-                    var handler = cull.handler(object, "click");
-                });
-            },
-
-            "throws if handler object property is not a function": function () {
-                var object = { click: 42 };
-
-                assert.exception(function () {
-                    var handler = cull.handler(object, "click");
-                });
-            }
-        },
-
         "concat": {
             "concatenates lists": function () {
                 var a = [1, 2, 3];
