@@ -1,5 +1,6 @@
 {
     "name": "culljs",
+    "humanName": "Cull.JS",
     "version": "0.0.1",
     "main": "./lib/cull",
     "description": "A toolbelt for writing functional javascript.",
@@ -18,8 +19,7 @@
     "devDependencies": {
         "buster": "~0.6",
         "buster-lint": "~0",
-        "uglify-js": "~1.2",
-        "zeparser": "*"
+        "cull-build-tools": "~0.0"
     },
     "keywords": [
         "JavaScript",
