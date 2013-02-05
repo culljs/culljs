@@ -37,11 +37,11 @@ functions.
 
 ## Function list
 
-* [isSeq](#isSeq-seq) `(seq)`
-* [toSeq](#toSeq-value) `(value)`
+* [isList](#isList-list) `(list)`
+* [toList](#toList-value) `(value)`
 * [doall](#doall-fn-list) `(fn, list)`
 * [isFunction](#isFunction-fn) `(fn)`
-* [reduce](#reduce-fn-initial-list) `(fn, initial, list)`
+* [reduce](#reduce-fn-initial-items) `(fn, initial, items)`
 * [all](#all-pred-list) `(pred, list)`
 * [some](#some-pred-list) `(pred, list)`
 * [onlySome](#onlySome-pred-list) `(pred, list)`
@@ -56,13 +56,12 @@ functions.
 * [callWith](#callWith) `()`
 * [partial](#partial-fn) `(fn)`
 * [bind](#bind-obj-callee) `(obj, callee)`
-* [handler](#handler-handlr-method) `(handlr, method)`
-* [flatten](#flatten-seq) `(seq)`
-* [indexOf](#indexOf-needle-seq) `(needle, seq)`
-* [uniq](#uniq-seq) `(seq)`
-* [first](#first-fn-seq) `(fn, seq)`
-* [select](#select-fn-seq) `(fn, seq)`
-* [difference](#difference-seq-other) `(seq, other)`
+* [flatten](#flatten-list) `(list)`
+* [indexOf](#indexOf-needle-list) `(needle, list)`
+* [uniq](#uniq-list) `(list)`
+* [first](#first-fn-list) `(fn, list)`
+* [select](#select-fn-list) `(fn, list)`
+* [difference](#difference-list-other) `(list, other)`
 * [keys](#keys-object) `(object)`
 * [values](#values-object) `(object)`
 * [map](#map-fn-list) `(fn, list)`
@@ -79,28 +78,28 @@ functions.
 
 ## Documentation and examples
 
-### isSeq `(seq)`
+### isList `(list)`
 
-Is `seq` an object with a numeric length, but not a DOM element?
+Is `list` an object with a numeric length, but not a DOM element?
 
 ```js
-assert(cull.isSeq([]));
-refute(cull.isSeq({}));
-assert(cull.isSeq({ length: 4 }));
-refute(cull.isSeq({ length: 4, tagName: "DIV" }));
+assert(cull.isList([]));
+refute(cull.isList({}));
+assert(cull.isList({ length: 4 }));
+refute(cull.isList({ length: 4, tagName: "DIV" }));
 ```
 
-### toSeq `(value)`
+### toList `(value)`
 
 Returns a version of `value` that is an actual Array.
 
 ```js
-assert.equals(cull.toSeq(1), [1]);
-assert.equals(cull.toSeq(null), []);
-assert.equals(cull.toSeq(undefined), []);
+assert.equals(cull.toList(1), [1]);
+assert.equals(cull.toList(null), []);
+assert.equals(cull.toList(undefined), []);
 
 var args = function () { return arguments; };
-assert.isArray(cull.toSeq(args(1, 2, 3)));
+assert.isArray(cull.toList(args(1, 2, 3)));
 ```
 
 ### doall `(fn, list)`
@@ -125,7 +124,7 @@ assert(cull.isFunction(square));
 refute(cull.isFunction({}));
 ```
 
-### reduce `(fn, initial, list)`
+### reduce `(fn, initial, items)`
 
 Returns the result of applying `fn` to `initial` and the first
 item in `list`, then applying `fn` to that result and the 2nd
@@ -135,10 +134,10 @@ Can also be called without `initial`, in which case the first
 invocation of `fn` will be with the first two items in `list`.
 
 ```js
-var seq = [1, 2, 3, 4];
+var list = [1, 2, 3, 4];
 var add = function (a, b) { return a + b; };
-assert.equals(cull.reduce(add, seq), 10);
-assert.equals(cull.reduce(add, 5, seq), 15);
+assert.equals(cull.reduce(add, list), 10);
+assert.equals(cull.reduce(add, 5, list), 15);
 ```
 
 ### all `(pred, list)`
@@ -296,47 +295,33 @@ bound.apply({});
 assert.equals(func.thisValues[2], obj);
 ```
 
-### handler `(handlr, method)`
+### flatten `(list)`
 
-If `handlr` is a function, returns it. If `handlr` is an
-object, returns a function that calls the `method` fn on `handlr`.
-
-Optionally takes additional arguments that are partially
-applied.
-
-```js
-var fn = function () {};
-var handler = cull.handler(fn, "eventName");
-assert.same(fn, handler);
-```
-
-### flatten `(seq)`
-
-Flatten `seq` recursively and return a list of non-seq values
+Flatten `list` recursively and return a list of non-list values
 
 ```js
 assert.equals(cull.flatten([1, 2, 3, 4]), [1, 2, 3, 4]);
 ```
 
-### indexOf `(needle, seq)`
+### indexOf `(needle, list)`
 
-Return the first index of `needle` in `seq`, otherwise < 0
+Return the first index of `needle` in `list`, otherwise < 0
 
 ```js
 assert.equals(1, cull.indexOf("b", ["a", "b", "c"]));
 ```
 
-### uniq `(seq)`
+### uniq `(list)`
 
-Return a list with only the unique values in `seq`
+Return a list with only the unique values in `list`
 
 ```js
 assert.equals(cull.uniq([1, 2, 3, 4]), [1, 2, 3, 4]);
 ```
 
-### first `(fn, seq)`
+### first `(fn, list)`
 
-Return the first item in `seq` for which `fn` returns `true`
+Return the first item in `list` for which `fn` returns `true`
 
 ```js
 var items = [1, 2, 3, 4];
@@ -344,9 +329,9 @@ var even = function (i) { return i % 2 === 0; };
 assert.equals(cull.first(even, items), 2);
 ```
 
-### select `(fn, seq)`
+### select `(fn, list)`
 
-Return a new list containing the items from `seq` for which
+Return a new list containing the items from `list` for which
         `fn` is `true`
 
 ```js
@@ -355,9 +340,9 @@ var result = cull.select(function (i) { return !!i; }, items);
 assert.equals(result, [1, 2, 3, 4, 5, 6]);
 ```
 
-### difference `(seq, other)`
+### difference `(list, other)`
 
-Return a list of properties present in `seq` but not in `other`
+Return a list of properties present in `list` but not in `other`
 
 ```js
 var result = cull.difference([1, 2, 3, 4], [2, 3]);
