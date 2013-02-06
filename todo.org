@@ -7,11 +7,7 @@
    even if you're not using IE in your TDD environment.
 ** TODO Error when inserting a block level element into a <p>
    This causes IE to panic, but other browsers let it slide.
-* Stuff we need [4/7]
-** DONE indexOf
+* Stuff we need [0/3]
 ** TODO all
 ** TODO include
 ** TODO invoke (i.e. shorthand for each+func)
-** DONE Remove underscore
-** DONE DOM Events
-** DONE Eventually: extract cull-dom
