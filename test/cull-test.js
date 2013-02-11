@@ -115,6 +115,13 @@ function square(n) { return n * n; }
             "returns arguments as true array": function () {
                 var args = function () { return arguments; };
                 assert.isArray(cull.toList(args(1, 2, 3)));
+            },
+
+            "returns an array with only one element for an object with length": function () {
+                var obj = { length: 3};
+                var arr = cull.toList(obj);
+                assert.equals(arr[0], obj);
+                assert.equals(arr.length, 1);
             }
         },
 
