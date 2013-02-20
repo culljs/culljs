@@ -132,6 +132,11 @@ function square(n) { return n * n; }
                     result.unshift(square(item));
                 }, [1, 2, 3, 4]);
                 assert.equals(result, [16, 9, 4, 1]);
+            },
+
+            "returns list": function () {
+                var input = [1, 2, 3, 4];
+                assert.same(input, cull.doall(this.spy(), input));
             }
         },
 
