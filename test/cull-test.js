@@ -241,11 +241,12 @@ function square(n) { return n * n; }
         "prop": {
             "example": function () {
                 var persons = [
-                    { name: "John", age: 23 },
-                    { name: "Suzy", age: 27 },
-                    { name: "Peter", age: 35 }
+                    { firstName: "John", age: 23 },
+                    { firstName: "Suzy", age: 27 },
+                    { firstName: "Peter", age: 35 }
                 ];
-                assert.equals(cull.map(cull.prop("name"), persons), ["John", "Suzy", "Peter"]);
+                assert.equals(cull.map(cull.prop("firstName"), persons), ["John", "Suzy", "Peter"]);
+                assert.equals(cull.map(cull.prop("age"), persons), [23, 27, 35]);
             },
 
             "returns named property from object": function () {
