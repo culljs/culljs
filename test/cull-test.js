@@ -239,6 +239,15 @@ function square(n) { return n * n; }
         },
 
         "prop": {
+            "example": function () {
+                var persons = [
+                    { name: "John", age: 23 },
+                    { name: "Suzy", age: 27 },
+                    { name: "Peter", age: 35 }
+                ];
+                assert.equals(cull.map(cull.prop("name"), persons), ["John", "Suzy", "Peter"]);
+            },
+
             "returns named property from object": function () {
                 assert.equals(cull.prop("id")({ id: 42 }), 42);
             },

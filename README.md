@@ -105,6 +105,7 @@ assert.isArray(cull.toList(args(1, 2, 3)));
 ### doall `(fn, list)`
 
 Calls `fn` on every item in `list`, presumably for side-effects.
+Returns the list.
 
 ```js
 var result = [];
@@ -211,7 +212,12 @@ Returns a function that takes one argument and returns its
 `name`-property.
 
 ```js
-assert.equals(cull.prop("id")({ id: 42 }), 42);
+var persons = [
+    { name: "John", age: 23 },
+    { name: "Suzy", age: 27 },
+    { name: "Peter", age: 35 }
+];
+assert.equals(cull.map(cull.prop("name"), persons), ["John", "Suzy", "Peter"]);
 ```
 
 ### func `(name, args)`
