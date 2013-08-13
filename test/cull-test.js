@@ -612,6 +612,13 @@ function square(n) { return n * n; }
             }
         },
 
+        "intersection": {
+            "keeps elements that are in both arrays": function () {
+                var result = cull.intersection([1, 2, 3, 4], [2, 3, 5]);
+                assert.equals(result, [2, 3]);
+            }
+        },
+
         "interpose": {
             "returns list with elements in coll separated by sep": function () {
                 var result = cull.interpose(":", [1, 2, 3]);

@@ -62,6 +62,7 @@ functions.
 * [first](#first-fn-list) `(fn, list)`
 * [select](#select-fn-list) `(fn, list)`
 * [difference](#difference-list-other) `(list, other)`
+* [intersection](#intersection-list1-list2) `(list1, list2)`
 * [keys](#keys-object) `(object)`
 * [values](#values-object) `(object)`
 * [map](#map-fn-list) `(fn, list)`
@@ -349,11 +350,20 @@ assert.equals(result, [1, 2, 3, 4, 5, 6]);
 
 ### difference `(list, other)`
 
-Return a list of properties present in `list` but not in `other`
+Return a list with the items present in `list` but not in `other`
 
 ```js
 var result = cull.difference([1, 2, 3, 4], [2, 3]);
 assert.equals(result, [1, 4]);
+```
+
+### intersection `(list1, list2)`
+
+Return a list with the items present in both `list1` and `list2`
+
+```js
+var result = cull.intersection([1, 2, 3, 4], [2, 3, 5]);
+assert.equals(result, [2, 3]);
 ```
 
 ### keys `(object)`
