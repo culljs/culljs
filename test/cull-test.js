@@ -508,6 +508,11 @@ function square(n) { return n * n; }
                     cull.mapcat(dbl, [1, 2, 3]),
                     [1, 1, 2, 2, 3, 3]
                 );
+            },
+
+            "handles empty lists properly": function () {
+                var dbl = function (single) { return [single, single]; };
+                assert.equals(cull.mapcat(dbl, []), []);
             }
         },
 
