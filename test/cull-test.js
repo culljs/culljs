@@ -3,6 +3,9 @@ if (typeof require === "function" && typeof module !== "undefined") {
     var cull = require("../lib/cull");
 }
 
+var assert = buster.assert;
+var refute = buster.refute;
+
 function isEven(n) { return n % 2 === 0; }
 function square(n) { return n * n; }
 
@@ -117,7 +120,7 @@ function square(n) { return n * n; }
                 assert.isArray(cull.toList(args(1, 2, 3)));
             },
 
-            "returns an array with only one element for an object with length": function () {
+            "returns array w/ one element for object with length": function () {
                 var obj = { length: 3};
                 var arr = cull.toList(obj);
                 assert.equals(arr[0], obj);
@@ -245,8 +248,12 @@ function square(n) { return n * n; }
                     { firstName: "Suzy", age: 27 },
                     { firstName: "Peter", age: 35 }
                 ];
-                assert.equals(cull.map(cull.prop("firstName"), persons), ["John", "Suzy", "Peter"]);
-                assert.equals(cull.map(cull.prop("age"), persons), [23, 27, 35]);
+
+                assert.equals(cull.map(cull.prop("firstName"), persons),
+                              ["John", "Suzy", "Peter"]);
+
+                assert.equals(cull.map(cull.prop("age"), persons),
+                              [23, 27, 35]);
             },
 
             "returns named property from object": function () {
