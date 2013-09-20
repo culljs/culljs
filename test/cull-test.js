@@ -523,6 +523,29 @@ function square(n) { return n * n; }
             }
         },
 
+        "zipmap": {
+            "creates a map out of two lists": function () {
+                var keys = ["a", "b", "c"];
+                var vals = [1, 2, 3];
+                assert.equals(cull.zipmap(keys, vals),
+                              {"a": 1, "b": 2, "c": 3});
+            },
+
+            "discards extra keys": function () {
+                var keys = ["a", "b", "c", "d"];
+                var vals = [1, 2, 3];
+                assert.equals(cull.zipmap(keys, vals),
+                              {"a": 1, "b": 2, "c": 3});
+            },
+
+            "discards extra vals": function () {
+                var keys = ["a", "b", "c"];
+                var vals = [1, 2, 3, 4];
+                assert.equals(cull.zipmap(keys, vals),
+                              {"a": 1, "b": 2, "c": 3});
+            }
+        },
+
         "first": {
             "finds the first matching element in a list": function () {
                 var items = [1, 2, 3, 4];

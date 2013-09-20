@@ -72,6 +72,7 @@ functions.
 * [partition](#partition-n-list) `(n, list)`
 * [mapdef](#mapdef-fn-list) `(fn, list)`
 * [mapcat](#mapcat-fn-list) `(fn, list)`
+* [zipmap](#zipmap-keys-vals) `(keys, vals)`
 * [interpose](#interpose-sep-list) `(sep, list)`
 * [after](#after-obj-name-fn) `(obj, name, fn)`
 * [before](#before-obj-name-fn) `(obj, name, fn)`
@@ -218,8 +219,12 @@ var persons = [
     { firstName: "Suzy", age: 27 },
     { firstName: "Peter", age: 35 }
 ];
-assert.equals(cull.map(cull.prop("firstName"), persons), ["John", "Suzy", "Peter"]);
-assert.equals(cull.map(cull.prop("age"), persons), [23, 27, 35]);
+
+assert.equals(cull.map(cull.prop("firstName"), persons),
+              ["John", "Suzy", "Peter"]);
+
+assert.equals(cull.map(cull.prop("age"), persons),
+              [23, 27, 35]);
 ```
 
 ### func `(name, args)`
@@ -472,6 +477,18 @@ assert.equals(
     cull.mapcat(dbl, [1, 2, 3]),
     [1, 1, 2, 2, 3, 3]
 );
+```
+
+### zipmap `(keys, vals)`
+
+Returns an object with `keys` mapped to `vals`. Superflous keys
+or vals are discarded.
+
+```js
+var keys = ["a", "b", "c"];
+var vals = [1, 2, 3];
+assert.equals(cull.zipmap(keys, vals),
+              {"a": 1, "b": 2, "c": 3});
 ```
 
 ### interpose `(sep, list)`
