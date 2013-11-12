@@ -7,9 +7,9 @@
     "author": { "name": "Christian Johansen and Magnar Sveen" },
     "repository": {
         "type": "git",
-        "url": "https://github.com/magnars/culljs.git"
+        "url": "https://github.com/culljs/culljs.git"
     },
-    "homepage": "https://github.com/magnars/culljs",
+    "homepage": "https://github.com/culljs/culljs",
     "scripts": {
         "test": "./node_modules/.bin/buster-test -e node"
     },

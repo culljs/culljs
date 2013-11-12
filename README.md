@@ -62,6 +62,7 @@ functions.
 * [first](#first-fn-list) `(fn, list)`
 * [select](#select-fn-list) `(fn, list)`
 * [difference](#difference-list-other) `(list, other)`
+* [intersection](#intersection-list1-list2) `(list1, list2)`
 * [keys](#keys-object) `(object)`
 * [values](#values-object) `(object)`
 * [map](#map-fn-list) `(fn, list)`
@@ -71,6 +72,7 @@ functions.
 * [partition](#partition-n-list) `(n, list)`
 * [mapdef](#mapdef-fn-list) `(fn, list)`
 * [mapcat](#mapcat-fn-list) `(fn, list)`
+* [zipmap](#zipmap-keys-vals) `(keys, vals)`
 * [interpose](#interpose-sep-list) `(sep, list)`
 * [after](#after-obj-name-fn) `(obj, name, fn)`
 * [before](#before-obj-name-fn) `(obj, name, fn)`
@@ -105,6 +107,7 @@ assert.isArray(cull.toList(args(1, 2, 3)));
 ### doall `(fn, list)`
 
 Calls `fn` on every item in `list`, presumably for side-effects.
+Returns the list.
 
 ```js
 var result = [];
@@ -211,7 +214,17 @@ Returns a function that takes one argument and returns its
 `name`-property.
 
 ```js
-assert.equals(cull.prop("id")({ id: 42 }), 42);
+var persons = [
+    { firstName: "John", age: 23 },
+    { firstName: "Suzy", age: 27 },
+    { firstName: "Peter", age: 35 }
+];
+
+assert.equals(cull.map(cull.prop("firstName"), persons),
+              ["John", "Suzy", "Peter"]);
+
+assert.equals(cull.map(cull.prop("age"), persons),
+              [23, 27, 35]);
 ```
 
 ### func `(name, args)`
@@ -342,11 +355,20 @@ assert.equals(result, [1, 2, 3, 4, 5, 6]);
 
 ### difference `(list, other)`
 
-Return a list of properties present in `list` but not in `other`
+Return a list with the items present in `list` but not in `other`
 
 ```js
 var result = cull.difference([1, 2, 3, 4], [2, 3]);
 assert.equals(result, [1, 4]);
+```
+
+### intersection `(list1, list2)`
+
+Return a list with the items present in both `list1` and `list2`
+
+```js
+var result = cull.intersection([1, 2, 3, 4], [2, 3, 5]);
+assert.equals(result, [2, 3]);
 ```
 
 ### keys `(object)`
@@ -455,6 +477,18 @@ assert.equals(
     cull.mapcat(dbl, [1, 2, 3]),
     [1, 1, 2, 2, 3, 3]
 );
+```
+
+### zipmap `(keys, vals)`
+
+Returns an object with `keys` mapped to `vals`. Superflous keys
+or vals are discarded.
+
+```js
+var keys = ["a", "b", "c"];
+var vals = [1, 2, 3];
+assert.equals(cull.zipmap(keys, vals),
+              {"a": 1, "b": 2, "c": 3});
 ```
 
 ### interpose `(sep, list)`

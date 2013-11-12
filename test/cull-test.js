@@ -3,6 +3,9 @@ if (typeof require === "function" && typeof module !== "undefined") {
     var cull = require("../lib/cull");
 }
 
+var assert = buster.assert;
+var refute = buster.refute;
+
 function isEven(n) { return n % 2 === 0; }
 function square(n) { return n * n; }
 
@@ -117,7 +120,7 @@ function square(n) { return n * n; }
                 assert.isArray(cull.toList(args(1, 2, 3)));
             },
 
-            "returns an array with only one element for an object with length": function () {
+            "returns array w/ one element for object with length": function () {
                 var obj = { length: 3};
                 var arr = cull.toList(obj);
                 assert.equals(arr[0], obj);
@@ -239,6 +242,20 @@ function square(n) { return n * n; }
         },
 
         "prop": {
+            "example": function () {
+                var persons = [
+                    { firstName: "John", age: 23 },
+                    { firstName: "Suzy", age: 27 },
+                    { firstName: "Peter", age: 35 }
+                ];
+
+                assert.equals(cull.map(cull.prop("firstName"), persons),
+                              ["John", "Suzy", "Peter"]);
+
+                assert.equals(cull.map(cull.prop("age"), persons),
+                              [23, 27, 35]);
+            },
+
             "returns named property from object": function () {
                 assert.equals(cull.prop("id")({ id: 42 }), 42);
             },
@@ -498,6 +515,34 @@ function square(n) { return n * n; }
                     cull.mapcat(dbl, [1, 2, 3]),
                     [1, 1, 2, 2, 3, 3]
                 );
+            },
+
+            "handles empty lists properly": function () {
+                var dbl = function (single) { return [single, single]; };
+                assert.equals(cull.mapcat(dbl, []), []);
+            }
+        },
+
+        "zipmap": {
+            "creates a map out of two lists": function () {
+                var keys = ["a", "b", "c"];
+                var vals = [1, 2, 3];
+                assert.equals(cull.zipmap(keys, vals),
+                              {"a": 1, "b": 2, "c": 3});
+            },
+
+            "discards extra keys": function () {
+                var keys = ["a", "b", "c", "d"];
+                var vals = [1, 2, 3];
+                assert.equals(cull.zipmap(keys, vals),
+                              {"a": 1, "b": 2, "c": 3});
+            },
+
+            "discards extra vals": function () {
+                var keys = ["a", "b", "c"];
+                var vals = [1, 2, 3, 4];
+                assert.equals(cull.zipmap(keys, vals),
+                              {"a": 1, "b": 2, "c": 3});
             }
         },
 
@@ -599,6 +644,13 @@ function square(n) { return n * n; }
             "subtracts one array from the other": function () {
                 var result = cull.difference([1, 2, 3, 4], [2, 3]);
                 assert.equals(result, [1, 4]);
+            }
+        },
+
+        "intersection": {
+            "keeps elements that are in both arrays": function () {
+                var result = cull.intersection([1, 2, 3, 4], [2, 3, 5]);
+                assert.equals(result, [2, 3]);
             }
         },
 
