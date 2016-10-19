@@ -13,9 +13,6 @@
     "scripts": {
         "test": "./node_modules/.bin/buster-test -e node"
     },
-    "engines": {
-        "node": "~0.6"
-    },
     "devDependencies": {
         "buster": "~0.6",
         "buster-lint": "~0",
